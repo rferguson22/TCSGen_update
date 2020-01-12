@@ -29,20 +29,80 @@ using namespace KinFuncs;
  */
 int main(int argc, char** argv) {
 
-    std::cout << "Kuku" << std::endl;
+    // ==================================
+    // ==== Reading the input config file
+    // ==================================
+    
+    ifstream inpconfig("GenOptions.dat");
+    
+    map<std::string, std::string> m_Settings;
+    if( inpconfig.is_open() ){
+        while( !inpconfig.eof() ){
+            std::string Key;
+            std::string Val;
+            inpconfig>>Key;
+            inpconfig>>Val;
+            m_Settings[Key] = Val;
+            //cout<<setw(10)<<Key<<setw(20)<<m_Settings[Key]<<endl;
+        }
+    }else{
+        cout<<"Can not open the file GenOptions.dat"<<endl;
+        cout<<"So can not initialize settings "<<endl;
+        cout<<"Exiting"<<endl;
+        exit(1);
+    }
+    
+    int Nsim;
+    double Eb;
+    double t_lim;
+    double Eg_min;
+    double Eg_max;
+    bool isLund;
+    double q2_cut;
+    
+    for( map<std::string, std::string>::iterator it =  m_Settings.begin(); it!= m_Settings.end(); it++ ){
+    
+        std::string key = (*it).first;
+        std::string val = (*it).second;
 
+        if( key.compare("Nsim") == 0 ){
+            Nsim = atoi(val.c_str());
+        }else if( key.compare("Eb") == 0 ){
+            Eb = atof(val.c_str());
+        }else if( key.compare("tLim") == 0 ){
+            t_lim = atof(val.c_str());
+        }else if( key.compare("EgMin") == 0 ){
+            Eg_min = atof(val.c_str());
+        }else if( key.compare("EgMax") == 0 ){
+            Eg_max = atof(val.c_str());
+        }else if( key.compare("Q2Cut") == 0 ){
+            q2_cut = atof(val.c_str());
+        }else if( key.compare("LUND") == 0 ){
+            isLund = atof(val.c_str());
+        }
+        
+    }
+    
+    cout<<"Nsim = "<<Nsim<<endl;
+    cout<<"Eb = "<<Eb<<endl;
+    cout<<"t_lim = "<<t_lim<<endl;
+    cout<<"Eg_min = "<<Eg_min<<endl;
+    cout<<"Eg_max = "<<Eg_max<<endl;
+    cout<<"q2_cut = "<<q2_cut<<endl;
+    cout<<"IsLund = "<<isLund<<endl;
+    
     const double PI = 3.14159265358979312;
     const double radian = 57.2957795130823229;
     const double Mp = 0.9383;
     const double Me = 0.00051;
-    const double Eb = 11.;
-    const double t_lim = -1.2; // limit of t distribution Max(|t|)
+    //const double Eb = 11.;
+    //const double t_lim = -1.2; // limit of t distribution Max(|t|)
 
-    const int Nsim = 500;
+    //const int Nsim = 500;
 
-    const double Eg_min = 9.; //Gev
-    const double Eg_max = 11.; //GeV
-    const double q2_cut = 0.02; // GeV2, this is the cut on virtuality of quasireal photon
+    //const double Eg_min = 9.; //Gev
+    //const double Eg_max = 11.; //GeV
+    //const double q2_cut = 0.02; // GeV2, this is the cut on virtuality of quasireal photon
     //  const double Minv_min = sqrt(Mp*Mp + 2*Mp*Eg_min ) - Mp;
     const double Q2min = 2 * Mp * Eg_min + t_lim - (Eg_min / Mp)*(2 * Mp * Mp - t_lim - sqrt(t_lim * t_lim - 4 * Mp * Mp * t_lim));
     const double Minv_min = sqrt(Q2min);
