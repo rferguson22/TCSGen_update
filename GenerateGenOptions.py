@@ -6,7 +6,9 @@ import sys
 
 def usage():
     print("The usage:");
-    print("python GenerateGenOptions.py -n Nsim ");
+    print("python GenerateGenOptions.py -n Nsim -e Ebeam -t t_lim --Egmin Egmin --Egmax Egmax --q2Cut Q2CutValue -l (write output in LUND file)");
+    print("As an example ");
+    print("python GenerateGenOptions.py -n 10000 -e 10.6 -t -1.2 --Egmin 4 --Egmax 10.6 --q2Cut 0.02 -l ");
 
 def main():
 
