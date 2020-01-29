@@ -3,6 +3,7 @@
 
 import getopt
 import sys
+import os
 
 def usage():
     print("The usage:");
@@ -20,10 +21,10 @@ def main():
     EgMax = 10.6
     Q2Cut = 0.02
     LUND = 0
-
+    Run = False;
 
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "n:e:t:lho", ["help", "output=", "Egmin=", "Egmax=", "q2Cut=", "LUND"])
+        opts, args = getopt.getopt(sys.argv[1:], "n:e:t:lhor", ["help", "output=", "Egmin=", "Egmax=", "q2Cut=", "LUND", "Run"])
     except getopt.GetoptError as err:
         # print help information and exit:
         print str(err)  # will print something like "option -e not recognized"
@@ -49,6 +50,8 @@ def main():
             Q2Cut = a;
         elif o in ("-l", "--LUND"):
             LUND = 1
+        elif o in ("-r", "--Run"):
+            Run = True;
         elif o in ("-h", "--help"):
             usage()
             sys.exit()
@@ -66,7 +69,13 @@ def main():
     optFile.write("Q2Cut    " + str(Q2Cut) + "\n");
     optFile.write("LUND     " + str(LUND));
 
-
+    optFile.close()
+    
+    
+    if(Run):
+        Cmd = "./TCSGen.exe"
+        print("Running the generator from the python code \n")
+        os.system(Cmd);
 
 if __name__ == "__main__":
     main();
