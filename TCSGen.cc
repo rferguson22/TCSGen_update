@@ -117,7 +117,7 @@ int main(int argc, char** argv) {
     TLorentzVector Lcm;
 
     TFile *file_out = new TFile("tcs_gen.root", "Recreate");
-    ofstream out_dat("tcs_gen.dat");
+    ofstream out_dat("TCSGen.dat");
 
     TH2D *h_ph_h_ph_cm1 = new TH2D("h_ph_h_ph_cm1", "", 200, 0., 360., 200, 0., 360.);
     TH2D *h_th_g_th_cm1 = new TH2D("h_th_g_th_cm1", "", 200, 0., 180., 200, 0., 180.);
