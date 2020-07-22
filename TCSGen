@@ -21,10 +21,10 @@ def main():
     EgMax = 10.6
     Q2Cut = 0.02
     LUND = 0
-    Run = False;
+    Run = True;
 
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "n:e:t:lhor", ["help", "output=", "Egmin=", "Egmax=", "q2Cut=", "LUND", "Run", "trig="])
+        opts, args = getopt.getopt(sys.argv[1:], "n:e:t:lhor", ["help", "output=", "Egmin=", "Egmax=", "q2Cut=", "LUND", "Run", "trig=", "docker"])
     except getopt.GetoptError as err:
         # print help information and exit:
         print str(err)  # will print something like "option -e not recognized"
@@ -52,6 +52,8 @@ def main():
             LUND = 1
         elif o in ("-r", "--Run"):
             Run = True;
+        elif o in("--docker"):
+            print("With docker")
         elif o in ("-h", "--help"):
             usage()
             sys.exit()
