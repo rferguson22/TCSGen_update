@@ -75,7 +75,11 @@ def main():
     
     
     if(Run):
-        Cmd = "./TCSGen.exe"
+        if os.path.exists("./TCSGen.exe"):
+            Cmd = "./TCSGen.exe"
+        else:
+            # let it find it in $PATH:
+            Cmd = "TCSGen.exe"
         print("Running the generator from the python code \n")
         os.system(Cmd);
 
