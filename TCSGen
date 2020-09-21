@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 #encoding: UTF-8
 
 import getopt
@@ -27,7 +27,7 @@ def main():
         opts, args = getopt.getopt(sys.argv[1:], "n:e:t:lhor", ["help", "output=", "Egmin=", "Egmax=", "q2Cut=", "LUND", "Run", "trig=", "docker"])
     except getopt.GetoptError as err:
         # print help information and exit:
-        print str(err)  # will print something like "option -e not recognized"
+        print (str(err))  # will print something like "option -e not recognized"
         usage()
         sys.exit(2)
     for o, a in opts:
