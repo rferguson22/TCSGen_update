@@ -241,8 +241,8 @@ int main(int argc, char** argv) {
             double vz = 0.;
 
             //============= Write Header ===================
-            out_dat << 3 << setw(5) << 1 << setw(5) << 1 << setw(5) << 0 << setw(5) << 0 << setw(15) << crs_BH << setw(15)
-                    << crs_INT << setw(15) << 0 << setw(5) << 0 << setw(5) << 0 << endl;
+            out_dat << 3 << setw(5) << 1 << setw(5) << 1 << setw(5) << 0 << " " << setw(5) << "  " << psf << " " << setw(15) << 0 << setw(15)
+                    << flux_factor << setw(15) << 0 << setw(5) << 0 << setw(5) << " " << crs_BH << endl;
             // =============== WWrite Particles ============
             //====== e- ======
             out_dat << 1 << setw(5) << -1 << setw(5) << 1 << setw(7) << 11 << setw(5) << 0 << setw(5) << 0 << setw(15) << px_em << setw(15) << py_em << setw(15)
