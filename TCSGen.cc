@@ -59,6 +59,7 @@ int main(int argc, char** argv) {
     double Eg_max;
     bool isLund;
     double q2_cut;
+    int seed;
     
     for( map<std::string, std::string>::iterator it =  m_Settings.begin(); it!= m_Settings.end(); it++ ){
     
@@ -78,7 +79,9 @@ int main(int argc, char** argv) {
         }else if( key.compare("Q2Cut") == 0 ){
             q2_cut = atof(val.c_str());
         }else if( key.compare("LUND") == 0 ){
-            isLund = atof(val.c_str());
+            isLund = atoi(val.c_str());
+        }else if( key.compare("Seed") == 0 ){
+            seed = atoi(val.c_str());
         }
         
     }
@@ -108,7 +111,7 @@ int main(int argc, char** argv) {
     const double Minv_min = sqrt(Q2min);
 
     TRandom2 rand;
-    rand.SetSeed(0);
+    rand.SetSeed(seed);
 
     TTCSKine tcs_kin1(Mp, Eb);
     TTCSCrs crs_lmlp;

@@ -22,9 +22,10 @@ def main():
     Q2Cut = 0.02
     LUND = 0
     Run = True;
+    Seed = 0;
 
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "n:e:t:lhor", ["help", "output=", "Egmin=", "Egmax=", "q2Cut=", "LUND", "Run", "trig=", "docker"])
+        opts, args = getopt.getopt(sys.argv[1:], "n:e:t:lhor", ["help", "output=", "Egmin=", "Egmax=", "q2Cut=", "LUND", "Run", "trig=", "seed=", "docker"])
     except getopt.GetoptError as err:
         # print help information and exit:
         print (str(err))  # will print something like "option -e not recognized"
@@ -33,6 +34,8 @@ def main():
     for o, a in opts:
         if o in ("-n", "--trig"):
             Nsim = a
+        elif o in("--seed"):
+            Seed = a
         elif o == "-e":
             Eb = a
         elif o == "-t":
@@ -69,7 +72,8 @@ def main():
     optFile.write("EgMin    " + str(EgMin) + "\n");
     optFile.write("EgMax    " + str(EgMax) + "\n");
     optFile.write("Q2Cut    " + str(Q2Cut) + "\n");
-    optFile.write("LUND     " + str(LUND));
+    optFile.write("LUND     " + str(LUND)  + "\n");
+    optFile.write("Seed     " + str(Seed));
 
     optFile.close()
     
