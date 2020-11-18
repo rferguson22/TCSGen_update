@@ -94,6 +94,10 @@ int main(int argc, char** argv) {
     cout<<"q2_cut = "<<q2_cut<<endl;
     cout<<"IsLund = "<<isLund<<endl;
     
+    cout<<"**************************************************"<<endl;
+    cout<<"*******"<<" RandomSeedActuallyUsed: "<<seed<<" *******"<<endl;
+    cout<<"**************************************************"<<endl;
+    
     const double PI = 3.14159265358979312;
     const double radian = 57.2957795130823229;
     const double Mp = 0.9383;
