@@ -155,7 +155,7 @@ int main(int argc, char** argv) {
 
         double psf_Eg = Eg_max - Eg_min;
         Eg = rand.Uniform(Eg_min, Eg_min + psf_Eg);
-        flux_factor = N_EPA(Eb, Eg, q2_cut);
+        flux_factor = N_EPA(Eb, Eg, q2_cut) + N_Brem(Eg, Eb);
         double s = Mp * Mp + 2 * Mp*Eg;
         double t_min = T_min(0., Mp*Mp, Q2min, Mp*Mp, s);
         double t_max = T_max(0., Mp*Mp, Q2min, Mp*Mp, s);
