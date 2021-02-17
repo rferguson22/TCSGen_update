@@ -43,3 +43,9 @@ double KinFuncs::N_EPA(double Eb, double Eg, double Q2_max)
   double Q2_min = me*me*x*x/(1 - x);
   return (1/Eb)*alpha/(PI*x)*( (1 - x + x*x/2)*log(Q2_max/Q2_min) - (1 - x));
 }
+
+double KinFuncs::N_Brem(double Eg, double Eb, double d, double X0)
+{
+  // The factor 0.5 is because when one integrates over (l - x)*dx, then you get l^2/2
+  return (0.5*d/X0)*(1/Eg)*((4./3.) - (4./3.)*(Eg/Eb) + Eg*Eg/(Eb*Eb));
+}
