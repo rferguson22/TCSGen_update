@@ -13,7 +13,7 @@
 class TTCSKine {
 public:
     TTCSKine(double m = 0.938, double E = 10.6);
-    TTCSKine(TLorentzVector, TLorentzVector, TLorentzVector, double m = 0.938, double E = 5.76);
+    TTCSKine(TLorentzVector&, TLorentzVector&, TLorentzVector&, double m = 0.938, double E = 5.76);
     /*TTCSKine(const TTCSKine& orig);*/
 
     double GetPhi_cm() const {return phi_cm;};
@@ -30,7 +30,7 @@ public:
     double GetQ2() const {return Q2;};                  // Q2 of the quasi-real photon
     double Get_L() const {return L;};                   // Kinematic factor L
     double Get_L0() const {return L0;};                 // Kinematic factor L0
-    void SetLemLepLp(TLorentzVector, TLorentzVector, TLorentzVector);
+    void SetLemLepLp(TLorentzVector&, TLorentzVector&, TLorentzVector&);
 
     void Define_kinematic();
 

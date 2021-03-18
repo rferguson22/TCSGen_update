@@ -18,7 +18,7 @@ TTCSKine::TTCSKine(double m, double E) {
     Lbeam.SetPxPyPzE(0, 0, Eb, Eb);
 }
 
-TTCSKine::TTCSKine(TLorentzVector em, TLorentzVector ep, TLorentzVector p1, double m, double E) {
+TTCSKine::TTCSKine(TLorentzVector &em, TLorentzVector &ep, TLorentzVector &p1, double m, double E) {
     Lem = em;
     Lep = ep;
     Lp1 = p1;
@@ -37,7 +37,7 @@ TTCSKine::TTCSKine(const TTCSKine& orig) {
 }
  */
 
-void TTCSKine::SetLemLepLp(TLorentzVector em, TLorentzVector ep, TLorentzVector p1) {
+void TTCSKine::SetLemLepLp(TLorentzVector &em, TLorentzVector &ep, TLorentzVector &p1) {
     Lem = em;
     Lep = ep;
     Lp1 = p1;
