@@ -96,12 +96,14 @@ void GPDs::DefineValues() {
     //cout<<"Q2="<<Q2<<"  tM="<<tM<<"  eta="<<eta<<endl;
 
     //assert( ind_q2 >= 0 && ind_tM >=0 && ind_eta >= 0 && ind_q2 < n_q2 - 1 && ind_tM < n_t - 1 && ind_eta < n_eta - 1);  
-    assert(ind_q2 >= 0);
-    assert(ind_q2 < n_q2 - 1);
-    assert(ind_tM >= 0);
-    assert(ind_tM < n_t - 1);
-    assert(ind_eta >= 0);
-    assert(ind_eta < n_eta - 1);
+
+    // Commenting these lines as in the code it is already checked to make sure kinematic  variables below are in appropriate range
+//    assert(ind_q2 >= 0);
+//    assert(ind_q2 < n_q2 - 1);
+//    assert(ind_tM >= 0);
+//    assert(ind_tM < n_t - 1);
+//    assert(ind_eta >= 0);
+//    assert(ind_eta < n_eta - 1);
 
     q21 = v_q2[ind_q2];
     q22 = v_q2[ind_q2 + 1];
