@@ -218,7 +218,7 @@ int main(int argc, char** argv) {
             h_ph_h_ph_cm1->Fill(phi_cm * TMath::RadToDeg(), tcs_kin1.GetPhi_cm());
             h_th_g_th_cm1->Fill(acos(cos_th) * TMath::RadToDeg(), tcs_kin1.GetTheta_cm());
 
-            psf = psf_t * psf_Q2 * psf_phi_lab * psf_cos_th*psf_phi_cm;
+            psf = psf_t * psf_Q2 * psf_phi_lab * psf_cos_th*psf_phi_cm*psf_Eg;
 
             //crs_lmlp.Set_SQ2t(s, Q2, t);
             crs_BH = crs_lmlp.Eval_BH(s, Q2, t, -1, tcs_kin1.GetPhi_cm(), tcs_kin1.GetTheta_cm()); // -1: cros section is not weighted by L/L0
