@@ -90,7 +90,7 @@ double TTCSCrs::BH_crs_section(double *x, double *par) {
     }
 
     //double crs = weight*(TMath::Power(alpha_em, 3)/(4*PI*(s - M_p*M_p)*(s - M_p*M_p)) )*(beta/(-t*L_BH))*
-    double crs = weight * sin(theta)*(TMath::Power(alpha_em, 3) / (4 * PI * (s - M_p * M_p)*(s - M_p * M_p)))*(beta / (-t * L_BH))*
+    double crs = (1./2*PI)*weight * sin(theta)*(TMath::Power(alpha_em, 3) / (4 * PI * (s - M_p * M_p)*(s - M_p * M_p)))*(beta / (-t * L_BH))*
             ((A_BH / (-t))*(F1p * F1p - (t / (4 * M_p * M_p)) * F2p * F2p) + (F1p + F2p)*(F1p + F2p) * B_BH / 2)*
             0.389379 * 1e9;
 
@@ -150,7 +150,7 @@ double TTCSCrs::INT_crs_section(double *x, double *par) {
         weight = 1;
     }
     //cout<<"M2_int = "<<M2_int<<endl;
-    double sigma_int = sin(theta) * weight * (-TMath::Power(alpha_em, 3)) / (4 * PI * s * s)*(-1 / t)*(M_p / sqrt(Q2))*(1 / (tau * sqrt(1 - tau))) * L0_BH / L_BH *
+    double sigma_int = (1./2*PI)*sin(theta) * weight * (-TMath::Power(alpha_em, 3)) / (4 * PI * s * s)*(-1 / t)*(M_p / sqrt(Q2))*(1 / (tau * sqrt(1 - tau))) * L0_BH / L_BH *
             //double sigma_int = weight*(-TMath::Power(alpha_em, 3))/(4*PI*s*s)*(-1/t)*(M_p/sqrt(Q2))*(1/(tau*sqrt(1 - tau)))*L0_BH/L_BH*
             cos(phi)*(1 + cos(theta) * cos(theta)) / sin(theta) * M2_int *
             0.389379 * 1e9;
