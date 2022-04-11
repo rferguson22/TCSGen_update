@@ -90,7 +90,7 @@ double TTCSCrs::BH_crs_section(double *x, double *par) {
     }
 
     //double crs = weight*(TMath::Power(alpha_em, 3)/(4*PI*(s - M_p*M_p)*(s - M_p*M_p)) )*(beta/(-t*L_BH))*
-    double crs = (1./2*PI)*weight * sin(theta)*(TMath::Power(alpha_em, 3) / (4 * PI * (s - M_p * M_p)*(s - M_p * M_p)))*(beta / (-t * L_BH))*
+    double crs = (1./2*PI)*weight *(TMath::Power(alpha_em, 3) / (4 * PI * (s - M_p * M_p)*(s - M_p * M_p)))*(beta / (-t * L_BH))*
             ((A_BH / (-t))*(F1p * F1p - (t / (4 * M_p * M_p)) * F2p * F2p) + (F1p + F2p)*(F1p + F2p) * B_BH / 2)*
             0.389379 * 1e9;
 
@@ -150,7 +150,7 @@ double TTCSCrs::INT_crs_section(double *x, double *par) {
         weight = 1;
     }
     //cout<<"M2_int = "<<M2_int<<endl;
-    double sigma_int = (1./2*PI)*sin(theta) * weight * (-TMath::Power(alpha_em, 3)) / (4 * PI * s * s)*(-1 / t)*(M_p / sqrt(Q2))*(1 / (tau * sqrt(1 - tau))) * L0_BH / L_BH *
+    double sigma_int = (1./2*PI) * weight * (-TMath::Power(alpha_em, 3)) / (4 * PI * s * s)*(-1 / t)*(M_p / sqrt(Q2))*(1 / (tau * sqrt(1 - tau))) * L0_BH / L_BH *
             //double sigma_int = weight*(-TMath::Power(alpha_em, 3))/(4*PI*s*s)*(-1/t)*(M_p/sqrt(Q2))*(1/(tau*sqrt(1 - tau)))*L0_BH/L_BH*
             cos(phi)*(1 + cos(theta) * cos(theta)) / sin(theta) * M2_int *
             0.389379 * 1e9;
@@ -163,13 +163,13 @@ double TTCSCrs::INT_crs_section(double *x, double *par) {
 double TTCSCrs::Eval_BH(double a_phi, double a_th) const {
     f_BH->SetParameters(is, iQ2, it, iweight);
 
-    return f_BH->Eval(a_phi, a_th) / sin(a_th / radian); // 1/sin(theta) is for getting d\sigma/dcos(\theta)
+    return f_BH->Eval(a_phi, a_th);
 }
 
 double TTCSCrs::Eval_BH(double a_s, double a_Q2, double a_t, double a_weight, double a_phi, double a_th) const {
 
     f_BH->SetParameters(a_s, a_Q2, a_t, a_weight);
-    return f_BH->Eval(a_phi, a_th) / sin(a_th / radian); // 1/sin(theta) is for getting d\sigma/dcos(\theta)
+    return f_BH->Eval(a_phi, a_th);
 
 }
 
@@ -188,7 +188,7 @@ double TTCSCrs::Eval_INT(double a_phi, double a_th, double a_sc_D) const {
 
     f_INT->SetParameters(is, iQ2, it, a_sc_D, iweight, ImH, ReH, ImE, ReE, ImHtild, ReHtild);
     f_INT->SetParameter(11, Dterm);
-    return f_INT->Eval(a_phi, a_th) / sin(a_th / radian); // 1/sin(theta) is for getting d\sigma/dcos(\theta)
+    return f_INT->Eval(a_phi, a_th);
 }
 
 double TTCSCrs::Eval_INT(double a_s, double a_Q2, double a_t, double a_weight, double a_phi, double a_th, double a_sc_D) const {
@@ -206,7 +206,7 @@ double TTCSCrs::Eval_INT(double a_s, double a_Q2, double a_t, double a_weight, d
 
     f_INT->SetParameters(a_s, a_Q2, a_t, a_sc_D, a_weight, ImH, ReH, ImE, ReE, ImHtild, ReHtild);
     f_INT->SetParameter(11, Dterm);
-    return f_INT->Eval(a_phi, a_th) / sin(a_th / radian); // 1/sin(theta) is for getting d\sigma/dcos(\theta)
+    return f_INT->Eval(a_phi, a_th);
 }
 
 void TTCSCrs::Set_SQ2t(double a_s, double a_Q2, double a_t) {
