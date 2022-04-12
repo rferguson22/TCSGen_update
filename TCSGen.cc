@@ -57,6 +57,7 @@ int main(int argc, char** argv) {
     double t_lim;
     double Eg_min;
     double Eg_max;
+    double MinvMin; 
     bool isLund;
     double q2_cut;
     int seed;
@@ -76,6 +77,8 @@ int main(int argc, char** argv) {
             Eg_min = atof(val.c_str());
         }else if( key.compare("EgMax") == 0 ){
             Eg_max = atof(val.c_str());
+        }else if( key.compare("MinvMin") == 0 ){
+            MinvMin = atof(val.c_str());
         }else if( key.compare("Q2Cut") == 0 ){
             q2_cut = atof(val.c_str());
         }else if( key.compare("LUND") == 0 ){
@@ -91,6 +94,7 @@ int main(int argc, char** argv) {
     cout<<"t_lim = "<<t_lim<<endl;
     cout<<"Eg_min = "<<Eg_min<<endl;
     cout<<"Eg_max = "<<Eg_max<<endl;
+    cout<<"MinvMin = "<<MinvMin<<endl;
     cout<<"q2_cut = "<<q2_cut<<endl;
     cout<<"IsLund = "<<isLund<<endl;
     
@@ -111,6 +115,9 @@ int main(int argc, char** argv) {
     //const double Eg_max = 11.; //GeV
     //const double q2_cut = 0.02; // GeV2, this is the cut on virtuality of quasireal photon
     //  const double Minv_min = sqrt(Mp*Mp + 2*Mp*Eg_min ) - Mp;
+    
+    const double Minv2_Egmin = sqrt( Mp*Mp + 2*Mp*Eg_min ) - Mp; // This is the maximum mass square that is accessible with a given Egmin, 
+                                                                 // if the User specified MinvMin is above this value, the, EgMin needs to be overwittten to a Eg, that will allow MinvMin production.
     const double Q2min = 2 * Mp * Eg_min + t_lim - (Eg_min / Mp)*(2 * Mp * Mp - t_lim - sqrt(t_lim * t_lim - 4 * Mp * Mp * t_lim));
     const double Minv_min = sqrt(Q2min);
 
