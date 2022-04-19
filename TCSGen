@@ -16,16 +16,17 @@ def main():
 # Default values of generator parameters
     Nsim = 10000
     Eb = 10.6
-    tLim = -1.2
+    tLim = -1.8
     EgMin = 4
     EgMax = 10.6
     Q2Cut = 0.02
     LUND = 0
     Run = True;
     Seed = 0;
+    MinvMin = 2;
 
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "n:e:t:lhor", ["help", "output=", "Egmin=", "Egmax=", "q2Cut=", "LUND", "Run", "trig=", "seed=", "docker"])
+        opts, args = getopt.getopt(sys.argv[1:], "n:e:t:lhor", ["help", "output=", "Egmin=", "Egmax=", "MinvMin=", "q2Cut=", "LUND", "Run", "trig=", "seed=", "docker"])
     except getopt.GetoptError as err:
         # print help information and exit:
         print (str(err))  # will print something like "option -e not recognized"
@@ -43,12 +44,14 @@ def main():
                 print("You provided tMax as " + a)
                 print("tMax should be a negative number.")
                 print("Exiting")
-                sys.exit()               
+                sys.exit()
             tLim = a
         elif o in ("--Egmin"):
             EgMin = a;
         elif o in ("--Egmax"):
             EgMax = a;
+        elif o in ("--MinvMin"):
+            MinvMin = a;
         elif o in ("--q2Cut"):
             Q2Cut = a;
         elif o in ("-l", "--LUND"):
@@ -65,19 +68,20 @@ def main():
 
 
     optFile = open("GenOptions.dat","w")
-    
+
     optFile.write("Nsim     " + str(Nsim) + "\n");
     optFile.write("Eb       " + str(Eb) + "\n");
     optFile.write("tLim     " + str(tLim) + "\n");
     optFile.write("EgMin    " + str(EgMin) + "\n");
     optFile.write("EgMax    " + str(EgMax) + "\n");
+    optFile.write("MinvMin  " + str(MinvMin) + "\n");
     optFile.write("Q2Cut    " + str(Q2Cut) + "\n");
     optFile.write("LUND     " + str(LUND)  + "\n");
     optFile.write("Seed     " + str(Seed));
 
     optFile.close()
-    
-    
+
+
     if(Run):
         if os.path.exists("./TCSGen.exe"):
             Cmd = "./TCSGen.exe"
