@@ -106,21 +106,20 @@ int main(int argc, char** argv) {
     const double radian = 57.2957795130823229;
     const double Mp = 0.9383;
     const double Me = 0.00051;
-    //const double Eb = 11.;
-    //const double t_lim = -1.2; // limit of t distribution Max(|t|)
-
-    //const int Nsim = 500;
-
-    //const double Eg_min = 9.; //Gev
-    //const double Eg_max = 11.; //GeV
-    //const double q2_cut = 0.02; // GeV2, this is the cut on virtuality of quasireal photon
     //  const double Minv_min = sqrt(Mp*Mp + 2*Mp*Eg_min ) - Mp;
     
-    const double Minv2_Egmin = sqrt( Mp*Mp + 2*Mp*Eg_min ) - Mp; // This is the maximum mass square that is accessible with a given Egmin, 
-                                                                 // if the User specified MinvMin is above this value, the, EgMin needs to be overwittten to a Eg, that will allow MinvMin production.
-    const double Q2min = 2 * Mp * Eg_min + t_lim - (Eg_min / Mp)*(2 * Mp * Mp - t_lim - sqrt(t_lim * t_lim - 4 * Mp * Mp * t_lim));
-    const double Minv_min = sqrt(Q2min);
-
+    const double Minv_Egmin = sqrt( Mp*Mp + 2*Mp*Eg_min ) - Mp; // This is the maximum mass square that is accessible with a given Egmin, 
+                                                                 // if the User specified MinvMin is above this value, then EgMin needs to be overwritten to a Eg, that will allow MinvMin production.
+    
+    if( Minv_Egmin < MinvMin ){
+        double EgMinOld = Eg_min;
+        Eg_min = (MinvMin*MinvMin + 2*Mp*MinvMin)/(2*Mp);
+        cout<<"With the given Eg_min, the mass "<<MinvMin<<" GeV is not reachable, so the Eg min will be adjusted from "<<EgMinOld<<" GeV to "<<Eg_min<<" GeV"<<endl;
+    }
+    
+    const double MinvMin2 = MinvMin*MinvMin;
+    
+    
     TRandom2 rand;
     rand.SetSeed(seed);
 
@@ -164,18 +163,17 @@ int main(int argc, char** argv) {
         Eg = rand.Uniform(Eg_min, Eg_min + psf_Eg);
         flux_factor = N_EPA(Eb, Eg, q2_cut) + N_Brem(Eg, Eb);
         double s = Mp * Mp + 2 * Mp*Eg;
-        double t_min = T_min(0., Mp*Mp, Q2min, Mp*Mp, s);
-        double t_max = T_max(0., Mp*Mp, Q2min, Mp*Mp, s);
+        double t_min = T_min(0., Mp*Mp, MinvMin2, Mp*Mp, s);
+        double t_max = T_max(0., Mp*Mp, MinvMin2, Mp*Mp, s);
         double psf_t = t_min - TMath::Max(t_max, t_lim);
-
 
         if (t_min > t_lim) {
             t = rand.Uniform(t_min - psf_t, t_min);
             double Q2max = 2 * Mp * Eg + t - (Eg / Mp)*(2 * Mp * Mp - t - sqrt(t * t - 4 * Mp * Mp * t)); // Page 182 of my notebook. Derived using "Q2max = s + t - 2Mp**2 + u_max" relation
 
-            double psf_Q2 = Q2max - Q2min;
+            double psf_Q2 = Q2max - MinvMin2;
 
-            Q2 = rand.Uniform(Q2min, Q2min + psf_Q2);
+            Q2 = rand.Uniform(MinvMin2, MinvMin2 + psf_Q2);
 
             double u = 2 * Mp * Mp + Q2 - s - t;
             double th_qprime = acos((s * (t - u) - Mp * Mp * (Q2 - Mp * Mp)) / sqrt(Lambda(s, 0, Mp * Mp) * Lambda(s, Q2, Mp * Mp))); //Byukling Kayanti (4.9)
