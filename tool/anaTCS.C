@@ -49,7 +49,7 @@ int anaTCS(string input_filename,string detector,bool Is_smear){
       else cout << "do NO smearing" << endl;
 
 // gROOT->Reset();
-gStyle->SetPalette(1);
+// gStyle->SetPalette(1);
 // gStyle->SetOptStat(1111111);
 gStyle->SetOptStat(0);
 
@@ -125,7 +125,7 @@ hacceptance_positive->Add(hacceptance_positive_forwardangle);
   
   target.SetPxPyPzE(0.,0.,0.,0.938);
   Pmax=3;
-  smin=10;
+  smin=5;
   smax=25;
   etamin=0.;
   etamax=0.5;
@@ -155,7 +155,7 @@ else if (detector=="CLAS12"){
   
   target.SetPxPyPzE(0.,0.,0.,0.938);  
   Pmax=3; 
-  smin=10;
+  smin=5;
   smax=25;
   etamin=0.;  
   etamax=0.5;
@@ -235,13 +235,13 @@ for(int k=0;k<n;k++){
   sprintf(hstname,"eta_xi_%i",k);
   heta_xi[k]=new TH2F(hstname,hstname,100,0,1,100,0,1);
   sprintf(hstname,"t_Q2_xi_%i",k);
-  ht_Q2_xi[k]=new TH3F(hstname,hstname,100,0,0.5,70,3,10,100,tmin,tmax);
+  ht_Q2_xi[k]=new TH3F(hstname,hstname,100,0,0.5,80,2,10,100,tmin,tmax);
   ht_Q2_xi[k]->SetTitle(";#xi;Q'2(GeV^{2});t(GeV^{2})");      
   sprintf(hstname,"Q2_xi_%i",k);
-  hQ2_xi[k]=new TH2F(hstname,hstname,100,0,0.5,70,3,10);
+  hQ2_xi[k]=new TH2F(hstname,hstname,100,0,0.5,80,2,10);
   hQ2_xi[k]->SetTitle(";#xi;Q'2(GeV^{2})");
   sprintf(hstname,"Q2_t_%i",k);  
-  hQ2_t[k]=new TH2F(hstname,hstname,100,tmin,tmax,70,3,10);
+  hQ2_t[k]=new TH2F(hstname,hstname,100,tmin,tmax,80,2,10);
   hQ2_t[k]->SetTitle(";t(GeV^{2});Q'2(GeV^{2})");
     
   sprintf(hstname,"photon_m2_%i",k);
@@ -432,16 +432,21 @@ for(int sbin=0;sbin<Nsbin;sbin++){
 TH1F *hs_final=new TH1F("s_final","s_final",50,smin,smax);
 TH1F *ht_final=new TH1F("t_final","t_final",50,tmin,tmax);
 TH1F *heta_final=new TH1F("eta_final","eta_final",50,etamin,etamax);
-TH1F *hQ2_final=new TH1F("Q2_final","Q2_final",70,3,10);
+TH1F *hQ2_final=new TH1F("Q2_final","Q2_final",80,2,10);
 
 TH2F *hs_t_final=new TH2F("s_t_final","s_t_final",50,smin,smax,50,tmin,tmax);
-TH2F *hs_Q2_final=new TH2F("s_Q2_final","s_Q2_final",50,smin,smax,70,3,10);
-TH2F *heta_t_final=new TH2F("eta_t_final","eta_t_final",50,etamin,etamax,50,tmin,tmax);
-TH2F *heta_Q2_final=new TH2F("eta_Q2_final","eta_Q2_final",50,etamin,etamax,70,3,10);
-TH2F *ht_Q2_final=new TH2F("t_Q2_final","t_Q2_final",50,tmin,tmax,70,3,10);
+// TH2F *hs_Q2_final=new TH2F("s_Q2_final","s_Q2_final",50,smin,smax,80,2,10);
+// TH2F *heta_t_final=new TH2F("eta_t_final","eta_t_final",50,etamin,etamax,50,tmin,tmax);
+// TH2F *heta_Q2_final=new TH2F("eta_Q2_final","eta_Q2_final",50,etamin,etamax,80,2,10);
+TH2F *hs_Q2_final=new TH2F("s_Q2_final","s_Q2_final",100,smin,smax,80,2,10);
+TH2F *heta_t_final=new TH2F("eta_t_final","eta_t_final",100,etamin,etamax,100,tmin,tmax);
+TH2F *heta_Q2_final=new TH2F("eta_Q2_final","eta_Q2_final",100,etamin,etamax,80,2,10);
+TH2F *heta_tlog_final=new TH2F("eta_tlog_final","eta_tlog_final",100,etamin,etamax,100,-2,1);
 
-TH3F *heta_t_Q2_final=new TH3F("eta_t_Q2_final","eta_t_Q2_final",50,etamin,etamax,50,tmin,tmax,70,3,10);
-TH3F *hs_t_Q2_final=new TH3F("s_t_Q2_final","s_t_Q2_final",50,smin,smax,50,tmin,tmax,70,3,10);
+TH2F *ht_Q2_final=new TH2F("t_Q2_final","t_Q2_final",50,tmin,tmax,80,2,10);
+
+TH3F *heta_t_Q2_final=new TH3F("eta_t_Q2_final","eta_t_Q2_final",50,etamin,etamax,50,tmin,tmax,80,2,10);
+TH3F *hs_t_Q2_final=new TH3F("s_t_Q2_final","s_t_Q2_final",50,smin,smax,50,tmin,tmax,80,2,10);
 
 TH1F *hs_final_bin=new TH1F("s_final_bin","s_final_bin",Nsbin,sbin_edge);
 TH1F *ht_final_bin=new TH1F("t_final_bin","t_final_bin",Ntbin,tbin_edge);
@@ -481,10 +486,10 @@ TFile *file=new TFile(input_filename.c_str());
 else cout << "open file " << input_filename << endl;
 TTree *Ttr1 = (TTree*) file->Get("tr1");
 
-// Double_t Q2,t_t,psf,psf_flux,crs_BH,flux_factor;
+// Double_t Q2,t_org,psf,psf_flux,crs_BH,flux_factor;
 // Double_t em_px,em_py,em_pz,ep_px,ep_py,ep_pz,prot_px,prot_py,prot_pz;
 // Ttr1->SetBranchAddress("Q2",&Q2);
-// Ttr1->SetBranchAddress("t",&t_t);
+// Ttr1->SetBranchAddress("t",&t_org);
 // Ttr1->SetBranchAddress("psf",&psf);
 // Ttr1->SetBranchAddress("psf_flux",&psf_flux);
 // Ttr1->SetBranchAddress("crs_BH",&crs_BH);
@@ -499,11 +504,13 @@ TTree *Ttr1 = (TTree*) file->Get("tr1");
 // Ttr1->SetBranchAddress("prot_py",&prot_py);
 // Ttr1->SetBranchAddress("prot_pz",&prot_pz);
 
-double Eg,Q2,t_t,psf,flux_factor,crs_BH,crs_INT;
+double Eg,Q2,t_org,s_org,eta_org,psf,flux_factor,crs_BH,crs_INT;
 TLorentzVector *L_em=0,*L_ep=0,*L_prot=0;
 Ttr1->SetBranchAddress("Eg",&Eg);
 Ttr1->SetBranchAddress("Q2",&Q2);
-Ttr1->SetBranchAddress("t",&t_t);
+Ttr1->SetBranchAddress("t",&t_org);
+Ttr1->SetBranchAddress("s",&s_org);
+Ttr1->SetBranchAddress("eta",&eta_org);
 Ttr1->SetBranchAddress("psf",&psf);
 Ttr1->SetBranchAddress("flux_factor",&flux_factor);
 Ttr1->SetBranchAddress("crs_BH",&crs_BH);
@@ -519,17 +526,29 @@ cout << "nevent " << nevent << endl;
 
   Double_t cov= 1e-12 * 1e-24; //pb to cm2 conversion
   Double_t br = 1.;
-  Double_t eff = 0.85;
+//   Double_t eff = 0.85;
+  Double_t eff = 0.50;  
   Double_t lumi, time;
+  
+  Double_t overall_NOpsf;
+  
 if (detector=="SoLID"){
   lumi = 1.2e37;  // 1.2e37/cm2/s is from 3nA on 15cm long LH2 target
   time = 50*3600*24;  //50 days in seconds
+  //double intlumi = 1.2e37*50*3600*24/1e39=51850/fb
+  overall_NOpsf = cov * br * eff * lumi* time /nevent;
 }
 else if (detector=="CLAS12"){
-  lumi = 1e35;  // 1e35/cm2/s for CLAS12
-  time = 130*3600*24;  //130 days in seconds
+//   lumi = 1e35;  // 1e35/cm2/s for CLAS12
+//   time = 130*3600*24;  //130 days in seconds
+  //double intlumi = 1e35*130*3600*24/1e39=1123/fb
+  
+  double intlumi = 200e39; // rga Fall 2018 data of ~200/fb, according to Pierre's thesis
+  overall_NOpsf = cov * br * eff * intlumi /nevent;
+  
 }
-  Double_t overall_NOpsf = cov *lumi * br * eff * time /nevent;
+
+//   cout << "overall_NOpsf*nevent " << overall_NOpsf*nevent << endl;
   
   Int_t counter;
   Int_t countd = 1;
@@ -543,10 +562,10 @@ for (Int_t i=0;i<nevent;i++) {
  
     Ttr1->GetEntry(i);  
 
-    cout << i << "\r"; 
+//     cout << i << "\r"; 
     
-    if (i<10)   cout << Eg << " " << Q2 << " " << t_t << " " << psf << " " << flux_factor  << crs_BH << " "  << crs_INT << " " << " " << L_em->M() << " " << L_ep->M() << " " << L_prot->M() << endl;
-//     if (i<10)   cout << Q2 << " " << t_t << " " << psf << " " << psf_flux << " " << crs_BH << " " << flux_factor << " " << em_px<< " " <<em_py<< " " <<em_pz<< " " <<ep_px<< " " <<ep_py<< " " <<ep_pz<< " " <<prot_px<< " " <<prot_py<< " " <<prot_pz <<  endl;
+    if (i<10)   cout << Eg << " " << Q2 << " " << t_org << " " << s_org << " "<< eta_org << " "<< psf << " " << flux_factor  << crs_BH << " "  << crs_INT << " " << " " << L_em->M() << " " << L_ep->M() << " " << L_prot->M() << endl;
+//     if (i<10)   cout << Q2 << " " << t_org << " " << psf << " " << psf_flux << " " << crs_BH << " " << flux_factor << " " << em_px<< " " <<em_py<< " " <<em_pz<< " " <<ep_px<< " " <<ep_py<< " " <<ep_pz<< " " <<prot_px<< " " <<prot_py<< " " <<prot_pz <<  endl;
     
     
     Double_t id = i;
@@ -561,7 +580,7 @@ for (Int_t i=0;i<nevent;i++) {
     
 //   if (crs_BH > 1000000) {
 //     cout << "crs > 1e6" << endl;
-//       cout << Q2 << " " << t_t << " " << psf << " " << psf_flux << " " << crs_BH << " " << flux_factor << " " << em_px<< " " <<em_py<< " " <<em_pz<< " " <<ep_px<< " " <<ep_py<< " " <<ep_pz<< " " <<prot_px<< " " <<prot_py<< " " <<prot_pz <<  endl;
+//       cout << Q2 << " " << t_org << " " << psf << " " << psf_flux << " " << crs_BH << " " << flux_factor << " " << em_px<< " " <<em_py<< " " <<em_pz<< " " <<ep_px<< " " <<ep_py<< " " <<ep_pz<< " " <<prot_px<< " " <<prot_py<< " " <<prot_pz <<  endl;
 //   }
 
       hcrs_BH_log->Fill(log10(crs_BH));
@@ -571,7 +590,12 @@ for (Int_t i=0;i<nevent;i++) {
 //       if (TMath::IsNaN(crs_BH)) {nocounter++; continue;}      
 //      cout << i << " " << crs_BH << endl;
       
-      if(Q2 < 4 || Q2 > 9) continue;            
+//       if(Q2 < 4 || Q2 > 9) continue;
+      //cut as in Pierre 's thesis      
+      if(Q2 < 2.25 || Q2 > 9) continue;
+      if(-t_org < 0.15 || -t_org > 0.8) continue;
+      if(Eg < 4 || Eg > 10.6) continue;                              
+//       if(Eg < 2.7 || Eg > 10.6) continue; // Eg 2.7GeV, not 4GeV, means Q2 max at 2.25GeV^2
       
       yescounter++;      
 
@@ -608,7 +632,7 @@ for (Int_t i=0;i<nevent;i++) {
        
 //        if ( (acc_electron_forwardangle>0 && e_mom < 4.9) || (acc_positron_forwardangle>0 && p_mom < 4.9) ) {}
 //        else {acc_positron = 0 ; acc_electron = 0;}//cut on at least one lepton forward can use CC	 
-//        if ( acc_electron_largeangle > 0 && acc_positron_largeangle > 0) {acc_positron=0; acc_electron=0;} //cut away two lepton in largeangle only   
+       if ( acc_electron_largeangle > 0 && acc_positron_largeangle > 0) {acc_positron=0; acc_electron=0;} //cut away two lepton in largeangle only   
 //        if ( (acc_positron_largeangle>0 && acc_electron_forwardangle>0 && e_mom > 5.) || (acc_electron_largeangle>0 && acc_positron_forwardangle>0 && p_mom > 5.) ||  (acc_positron_forwardangle >0 && p_mom>5. && acc_electron_forwardangle>0 && e_mom > 5.) ) {acc_positron=0; acc_electron=0;} //cut away forward lepton exceed CC limit       
        if (acc_proton_largeangle > 0 && pr_mom > 2.0)  acc_proton=0; //cut away 2.0 at largeangle  for proton
        if (acc_proton_forwardangle > 0 && pr_mom > 4.5)  acc_proton=0; //cut away 4.4 at forwardangle for proton
@@ -718,9 +742,11 @@ for (Int_t i=0;i<nevent;i++) {
       double xi=Q2/(2*s-Q2);       //eta in TCS is similar to xi in DVCS 
       double t_min=4*eta*eta*M*M/(1-eta*eta);   //???????????????      
      
-//       cout << " t " << t_t << " " << -t << endl;
-//       cout << " M " << Q2 << " " << InvM_ep*InvM_ep << endl;      
-//       cout << InvM_ep << " " << t << " " << s << " " << W << endl; 
+      if (i<10) {
+      cout << " t " << t_org << " " << -t << endl;
+      cout << " M " << Q2 << " " << InvM_ep*InvM_ep << endl;      
+      cout << InvM_ep << " " << t << " " << s << " " << W << endl; 
+      }
 
       TLorentzVector target_CM=target,pr_CM=pr,e_CM=e,p_CM=p; 
       target_CM.Boost(-ep.BoostVector()); 
@@ -789,6 +815,7 @@ for (Int_t i=0;i<nevent;i++) {
       double acc_cut=1;
 //       if (fabs(ph.M2())>0.02) acc_cut=0;
       if (fabs(ph.M2())>0.05) acc_cut=0;      
+//       if (fabs(ph.M2())>0.15) acc_cut=0;            
 //       if(fabs(Miss.M2())>0.05 || fabs(Miss.Px()/Miss.P())>0.2 || fabs(Miss.Py()/Miss.P())>0.2) acc_cut=0;      
 
 // 	cout << acc << " " << acc_proton << " " << acc_positron << " " << acc_electron << endl;
@@ -872,6 +899,7 @@ for (Int_t i=0;i<nevent;i++) {
 	hs_t_final->Fill(s,t,weight[index]);
 	hs_Q2_final->Fill(s,Q2,weight[index]);
 	heta_t_final->Fill(eta,t,weight[index]);
+	heta_tlog_final->Fill(eta,log(t),weight[index]);
 	heta_Q2_final->Fill(eta,Q2,weight[index]);
 	ht_Q2_final->Fill(t,Q2,weight[index]);
 	heta_t_Q2_final->Fill(eta,t,Q2,weight[index]);
@@ -1460,14 +1488,24 @@ hacc_t_Q2->Draw("colz");
 TCanvas *c_eta_xi = new TCanvas("eta_xi","eta_xi",1600,800);
 heta_xi[1]->Draw("colz");
 
+TCanvas *c_s_Q2_final = new TCanvas("c_s_Q2_final ","c_s_Q2_final",1000,800);
+hs_Q2_final->Draw("colz");
+
+TCanvas *c_eta_Q2_final = new TCanvas("c_eta_Q2_final ","c_eta_Q2_final",1000,800);
+heta_Q2_final->Draw("colz");
+
+TCanvas *c_eta_t_final = new TCanvas("c_eta_t_final","c_eta_t_final",1000,800);
+heta_t_final->Draw("colz");
+
+TCanvas *c_eta_tlog_final = new TCanvas(" ","c_eta_tlog_final",1000,800);
+heta_tlog_final->Draw("colz");
 
 // cout << "number of entries" << endl;
 // for(int k=0;k<n;k++){ cout << k << " "  << hQ2_t[k]->GetEntries() << endl;}
 cout << "integral" << endl;
 for(int k=0;k<n;k++){ cout << k << " "  << hQ2_t[k]->Integral() << endl;}
 
-// cout << "total events before quasi photon cut " << hs[index-1]->Integral() << endl;
-// cout << "total events after quasi photon cut " << hs[index]->Integral() << endl;
+cout << "total events " << ht_Q2_final->Integral() << endl;
 
 hacc_t_Q2_xi->SetDirectory(outputfile);
 hacc_t_Q2->SetDirectory(outputfile);
