@@ -136,7 +136,7 @@ int main(int argc, char** argv) {
     TH2D *h_th_g_th_cm1 = new TH2D("h_th_g_th_cm1", "", 200, 0., 180., 200, 0., 180.);
 
     //================= Definition of Tree Variables =================
-    double Eg, Minv, t, Q2;
+    double Eg, Minv, t, Q2,s,eta;
     double psf, crs_BH, crs_INT, crs_int;
     double psf_flux, flux_factor;
     TLorentzVector L_em, L_ep, L_prot;
@@ -149,6 +149,8 @@ int main(int argc, char** argv) {
     tr1->Branch("Eg", &Eg, "Eg/D");
     tr1->Branch("Q2", &Q2, "Q2/D");
     tr1->Branch("t", &t, "t/D");
+    tr1->Branch("s", &t, "s/D");
+    tr1->Branch("eta", &t, "eta/D");    
     tr1->Branch("psf", &psf, "psf/D");
     tr1->Branch("flux_factor", &flux_factor, "flux_factor/D");
     tr1->Branch("crs_BH", &crs_BH, "crs_BH/D");
@@ -162,7 +164,7 @@ int main(int argc, char** argv) {
         double psf_Eg = Eg_max - Eg_min;
         Eg = rand.Uniform(Eg_min, Eg_min + psf_Eg);
         flux_factor = N_EPA(Eb, Eg, q2_cut) + N_Brem(Eg, Eb);
-        double s = Mp * Mp + 2 * Mp*Eg;
+        s = Mp * Mp + 2 * Mp*Eg;
         double t_min = T_min(0., Mp*Mp, MinvMin2, Mp*Mp, s);
         double t_max = T_max(0., Mp*Mp, MinvMin2, Mp*Mp, s);
         double psf_t = t_min - TMath::Max(t_max, t_lim);
@@ -228,7 +230,7 @@ int main(int argc, char** argv) {
             //crs_lmlp.Set_SQ2t(s, Q2, t);
             crs_BH = crs_lmlp.Eval_BH(s, Q2, t, -1, tcs_kin1.GetPhi_cm(), tcs_kin1.GetTheta_cm()); // -1: cros section is not weighted by L/L0
 
-            double eta = Q2 / (2 * (s - Mp * Mp) - Q2);
+            eta = Q2 / (2 * (s - Mp * Mp) - Q2);
 
             if (Q2 < 9. && -t < 0.8 && eta < 0.8) {
                 crs_INT = crs_lmlp.Eval_INT(s, Q2, t, -1., tcs_kin1.GetPhi_cm(), tcs_kin1.GetTheta_cm(), 2.); //the last argumen "1" is the sc_D

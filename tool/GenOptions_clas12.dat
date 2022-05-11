@@ -1,0 +1,9 @@
+Nsim     1000000
+Eb       10.6
+tLim     -0.8
+EgMin    4
+EgMax    10.6
+MinvMin  1.5
+Q2Cut    0.15
+LUND     1
+Seed     0
