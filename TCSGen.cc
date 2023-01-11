@@ -149,8 +149,8 @@ int main(int argc, char** argv) {
     tr1->Branch("Eg", &Eg, "Eg/D");
     tr1->Branch("Q2", &Q2, "Q2/D");
     tr1->Branch("t", &t, "t/D");
-    tr1->Branch("s", &t, "s/D");
-    tr1->Branch("eta", &t, "eta/D");    
+    tr1->Branch("s", &s, "s/D");
+    tr1->Branch("eta", &eta, "eta/D");    
     tr1->Branch("psf", &psf, "psf/D");
     tr1->Branch("flux_factor", &flux_factor, "flux_factor/D");
     tr1->Branch("crs_BH", &crs_BH, "crs_BH/D");
