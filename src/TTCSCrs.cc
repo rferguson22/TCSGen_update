@@ -89,8 +89,8 @@ double TTCSCrs::BH_crs_section(double *x, double *par) {
         weight = 1.;
     }
 
-    //double crs = weight*(TMath::Power(alpha_em, 3)/(4*PI*(s - M_p*M_p)*(s - M_p*M_p)) )*(beta/(-t*L_BH))*
-    double crs = 1./(2*PI)*weight *(TMath::Power(alpha_em, 3) / (4 * PI * (s - M_p * M_p)*(s - M_p * M_p)))*(beta / (-t * L_BH))*
+    /*With (sin(theta)) it returns dsigma/dTheta, without it is dSigma/dCos(Theta) */ 
+    double crs = /*(sin(theta))* */ 1./(2*PI)*weight *(TMath::Power(alpha_em, 3) / (4 * PI * (s - M_p * M_p)*(s - M_p * M_p)))*(beta / (-t * L_BH))*
             ((A_BH / (-t))*(F1p * F1p - (t / (4 * M_p * M_p)) * F2p * F2p) + (F1p + F2p)*(F1p + F2p) * B_BH / 2)*
             0.389379 * 1e9;
 
