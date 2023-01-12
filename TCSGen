@@ -24,9 +24,11 @@ def main():
     Run = True;
     Seed = 0;
     MinvMin = 2;
+    vz_Max =  2.5;
+    vz_Min = -2.5;
 
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "n:e:t:lhor", ["help", "output=", "Egmin=", "Egmax=", "MinvMin=", "q2Cut=", "LUND", "Run", "trig=", "seed=", "docker"])
+        opts, args = getopt.getopt(sys.argv[1:], "n:e:t:lhor", ["help", "output=", "Egmin=", "Egmax=", "MinvMin=", "q2Cut=", "LUND", "Run", "trig=", "seed=", "docker", "vzMin=", "vzMax="])
     except getopt.GetoptError as err:
         # print help information and exit:
         print (str(err))  # will print something like "option -e not recognized"
@@ -54,6 +56,10 @@ def main():
             MinvMin = a;
         elif o in ("--q2Cut"):
             Q2Cut = a;
+        elif o in ("--vzMin"):
+            vz_min = a;
+        elif o in ("--vzMax"):
+            vz_max = a;
         elif o in ("-l", "--LUND"):
             LUND = 1
         elif o in ("-r", "--Run"):
@@ -74,6 +80,8 @@ def main():
     optFile.write("tLim     " + str(tLim) + "\n");
     optFile.write("EgMin    " + str(EgMin) + "\n");
     optFile.write("EgMax    " + str(EgMax) + "\n");
+    optFile.write("vzMax    " + str(vz_max) + "\n");
+    optFile.write("vzMin    " + str(vz_min) + "\n");
     optFile.write("MinvMin  " + str(MinvMin) + "\n");
     optFile.write("Q2Cut    " + str(Q2Cut) + "\n");
     optFile.write("LUND     " + str(LUND)  + "\n");

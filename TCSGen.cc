@@ -57,10 +57,12 @@ int main(int argc, char** argv) {
     double t_lim;
     double Eg_min;
     double Eg_max;
-    double MinvMin; 
+    double MinvMin;
     bool isLund;
     double q2_cut;
     int seed;
+    double vz_max;
+    double vz_min;
     
     for( map<std::string, std::string>::iterator it =  m_Settings.begin(); it!= m_Settings.end(); it++ ){
     
@@ -85,6 +87,10 @@ int main(int argc, char** argv) {
             isLund = atoi(val.c_str());
         }else if( key.compare("Seed") == 0 ){
             seed = atoi(val.c_str());
+        }else if( key.compare("vzMax") == 0 ){
+            vz_max = atof(val.c_str());
+        }else if( key.compare("vzMin") == 0 ){
+            vz_min = atof(val.c_str());
         }
         
     }
@@ -251,8 +257,8 @@ int main(int argc, char** argv) {
             double px_prot = L_prot.Px();
             double py_prot = L_prot.Py();
             double pz_prot = L_prot.Pz();
-            //double vz = rand.Uniform(-7.5, 7.5);
-            double vz = 0.;
+            double vz = rand.Uniform(vz_min, vz_max);
+            //double vz = 0.;
 
             //============= Write Header ===================
             out_dat << 3 << setw(5) << 1 << setw(5) << 1 << setw(5) << 0 << " " << setw(5) << "  " << psf << " " << setw(15) << 0 << setw(15)
