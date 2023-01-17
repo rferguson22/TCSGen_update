@@ -102,6 +102,8 @@ int main(int argc, char** argv) {
     cout<<"Eg_max = "<<Eg_max<<endl;
     cout<<"MinvMin = "<<MinvMin<<endl;
     cout<<"q2_cut = "<<q2_cut<<endl;
+    cout << "vz_max = " << vz_max << endl;
+    cout << "vz_min = " << vz_min << endl;
     cout<<"IsLund = "<<isLund<<endl;
     
     cout<<"**************************************************"<<endl;
