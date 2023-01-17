@@ -24,8 +24,8 @@ def main():
     Run = True;
     Seed = 0;
     MinvMin = 2;
-    vz_Max =  2.5;
-    vz_Min = -2.5;
+    vz_max =  2.5;
+    vz_min = -2.5;
 
     try:
         opts, args = getopt.getopt(sys.argv[1:], "n:e:t:lhor", ["help", "output=", "Egmin=", "Egmax=", "MinvMin=", "q2Cut=", "LUND", "Run", "trig=", "seed=", "docker", "vzMin=", "vzMax="])
