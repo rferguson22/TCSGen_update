@@ -70,7 +70,7 @@ double  RadiativeCorrections::Compute_cs_correction_factor(double Inv_Mass)
 };
 
 //Old version with emmision along one lepton
-void RadiativeCorrections::Soft_Photon_Emission(TLorentzVector &Electron, TLorentzVector &Positron, TLorentzVector &Rad_Photon, TLorentzVector &Rad_Photon1)
+/*void RadiativeCorrections::Soft_Photon_Emission(TLorentzVector &Electron, TLorentzVector &Positron, TLorentzVector &Rad_Photon, TLorentzVector &Rad_Photon1)
 {
 
   /// use pointer instead to modify electron or positron
@@ -105,11 +105,11 @@ void RadiativeCorrections::Soft_Photon_Emission(TLorentzVector &Electron, TLoren
     Positron = Lepton_Radiated;
 
   return;
-}
+}*/
 
 
 
-/*void RadiativeCorrections::Soft_Photon_Emission(TLorentzVector &Electron, TLorentzVector &Positron, TLorentzVector &Rad_Photon_1, TLorentzVector &Rad_Photon_2)
+void RadiativeCorrections::Soft_Photon_Emission(TLorentzVector &Electron, TLorentzVector &Positron, TLorentzVector &Rad_Photon_1, TLorentzVector &Rad_Photon_2)
 {
 
   /// use pointer instead to modify electron or positron
@@ -149,7 +149,7 @@ void RadiativeCorrections::Soft_Photon_Emission(TLorentzVector &Electron, TLoren
 
   return;
 }
-*/
+
 
 RadiativeCorrections::~RadiativeCorrections()
 {

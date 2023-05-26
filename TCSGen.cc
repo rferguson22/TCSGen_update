@@ -286,7 +286,7 @@ int main(int argc, char **argv)
                 Lund_out.close();
                 file_number++;
                 // Lund_out.open(Form("JPsi_gen_%d.txt", file_number), ofstream::out);
-                Lund_out.open(Form("JPsi_gen_%d.txt", file_number), ofstream::out);
+                Lund_out.open(Form("TCS_gen_%d.txt", file_number), ofstream::out);
             }
         }
 
@@ -382,11 +382,10 @@ int main(int argc, char **argv)
 
             tcs_kin1.SetLemLepLp(L_em, L_ep, L_prot);
 
-
             psf = psf_t * psf_Q2 * psf_phi_lab * psf_cos_th * psf_phi_cm * psf_Eg;
 
             // crs_lmlp.Set_SQ2t(s, Q2, t);
-            crs_BH = crs_lmlp.Eval_BH(s, Q2, t, -1, (phi_cm*TMath::RadToDeg()), (acos(cos_th)*TMath::RadToDeg())); // -1: cros section is not weighted by L/L0
+            crs_BH = crs_lmlp.Eval_BH(s, Q2, t, -1, (phi_cm * TMath::RadToDeg()), (acos(cos_th) * TMath::RadToDeg())); // -1: cros section is not weighted by L/L0
 
             if (isnan(crs_BH))
                 continue;
@@ -395,7 +394,7 @@ int main(int argc, char **argv)
 
             if (Q2 < 9. && -t < 0.8 && eta < 0.8)
             {
-                crs_INT = crs_lmlp.Eval_INT(s, Q2, t, -1., (phi_cm*TMath::RadToDeg()), (acos(cos_th)*TMath::RadToDeg()), 2.); // the last argumen "1" is the sc_D
+                crs_INT = crs_lmlp.Eval_INT(s, Q2, t, -1., (phi_cm * TMath::RadToDeg()), (acos(cos_th) * TMath::RadToDeg()), 2.); // the last argumen "1" is the sc_D
                 // crs_INT = crs_lmlp.Eval_INT( tcs_kin1.GetPhi_cm(), tcs_kin1.GetTheta_cm(), 1.); //the last argumen "1" is the sc_D
             }
             else
@@ -439,19 +438,21 @@ int main(int argc, char **argv)
             else
             {
                 // Writing Header
-                Lund_out << 3 << setw(5) << 1 << setw(5) << 1 << setw(5) << 0 << " " << setw(5) << "  " << psf << " " << setw(15) << 0 << setw(15) << flux_factor << setw(15) << 0 << setw(5) << 0 << setw(5) << " " << crs_BH << endl; // Writing Proton
-                Lund_out << 1 << setw(5) << 1 << setw(5) << 1 << setw(7) << 2212 << setw(5) << 0 << setw(5) << 0 << setw(15) << px_prot << setw(15) << py_prot << setw(15) << pz_prot;
-                Lund_out << setw(15) << L_prot.E() << setw(15) << Mp << setw(15) << 0. << setw(15) << 0. << setw(15) << vz << endl;
+                Lund_out << 5 << setw(5) << 1 << setw(5) << 1 << setw(5) << 0 << " " << setw(5) << "  " << psf << " " << setw(15) << 0 << setw(15) << flux_factor << setw(15) << 0 << setw(5) << 0 << setw(5) << " " << crs_BH << "\n"; // Writing Proton
                 // Writing Electron
-                Lund_out << 2 << setw(5) << -1 << setw(5) << 1 << setw(7) << 11 << setw(5) << 0 << setw(5) << 0 << setw(15) << px_em << setw(15) << py_em << setw(15) << pz_em;
-                Lund_out << setw(15) << E_em << setw(15) << Me << setw(15) << 0. << setw(15) << 0. << setw(15) << vz << endl;
+                Lund_out << 1 << setw(5) << -1 << setw(5) << 1 << setw(7) << 11 << setw(5) << 0 << setw(5) << 0 << setw(15) << px_em << setw(15) << py_em << setw(15) << pz_em;
+                Lund_out << setw(15) << E_em << setw(15) << Me << setw(15) << 0. << setw(15) << 0. << setw(15) << vz << "\n";
                 // Writing Positron
-                Lund_out << 3 << setw(5) << 1 << setw(5) << 1 << setw(7) << -11 << setw(5) << 0 << setw(5) << 0 << setw(15) << px_ep << setw(15) << py_ep << setw(15) << pz_ep;
-                Lund_out << setw(15) << E_ep << setw(15) << Me << setw(15) << 0. << setw(15) << 0. << setw(15) << vz << endl;
+                Lund_out << 2 << setw(5) << 1 << setw(5) << 1 << setw(7) << -11 << setw(5) << 0 << setw(5) << 0 << setw(15) << px_ep << setw(15) << py_ep << setw(15) << pz_ep;
+                Lund_out << setw(15) << E_ep << setw(15) << Me << setw(15) << 0. << setw(15) << 0. << setw(15) << vz << "\n";
+                // Writing Proton
+                Lund_out << 3 << setw(5) << 1 << setw(5) << 1 << setw(7) << 2212 << setw(5) << 0 << setw(5) << 0 << setw(15) << px_prot << setw(15) << py_prot << setw(15) << pz_prot;
+                Lund_out << setw(15) << L_prot.E() << setw(15) << Mp << setw(15) << 0. << setw(15) << 0. << setw(15) << vz << "\n";
+                // Writing Photons
                 Lund_out << 4 << setw(5) << 0 << setw(5) << 1 << setw(7) << 22 << setw(5) << 0 << setw(5) << 0 << setw(15) << px_rad_em << setw(15) << py_rad_em << setw(15) << pz_rad_em;
-                Lund_out << setw(15) << E_rad_em << setw(15) << 0.0 << setw(15) << 0. << setw(15) << 0. << setw(15) << vz << endl;
+                Lund_out << setw(15) << E_rad_em << setw(15) << 0.0 << setw(15) << 0. << setw(15) << 0. << setw(15) << vz << "\n";
                 Lund_out << 5 << setw(5) << 0 << setw(5) << 1 << setw(7) << 22 << setw(5) << 0 << setw(5) << 0 << setw(15) << px_rad_ep << setw(15) << py_rad_ep << setw(15) << pz_rad_ep;
-                Lund_out << setw(15) << E_rad_ep << setw(15) << 0.0 << setw(15) << 0. << setw(15) << 0. << setw(15) << vz << endl;
+                Lund_out << setw(15) << E_rad_ep << setw(15) << 0.0 << setw(15) << 0. << setw(15) << 0. << setw(15) << vz << "\n";
             }
         }
         else
@@ -461,11 +462,14 @@ int main(int argc, char **argv)
         }
     }
 
-    tr1->Write();
-    h_ph_h_ph_cm1->Write();
-    h_th_g_th_cm1->Write();
+    if (write_root)
+    {
+        tr1->Write();
+        h_ph_h_ph_cm1->Write();
+        h_th_g_th_cm1->Write();
 
-    file_out->Close();
+        file_out->Close();
+    }
 
     return 0;
 }
