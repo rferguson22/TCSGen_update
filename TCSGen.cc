@@ -47,7 +47,7 @@ int main(int argc, char **argv)
             inpconfig >> Key;
             inpconfig >> Val;
             m_Settings[Key] = Val;
-            // cout<<setw(10)<<Key<<setw(20)<<m_Settings[Key]<<endl;
+            //cout<<setw(10)<<Key<<setw(20)<<m_Settings[Key]<<endl;
         }
     }
     else
@@ -136,10 +136,6 @@ int main(int argc, char **argv)
         {
             rad_cut_off_min = atof(val.c_str());
         }
-        else if (key.compare("rad_cut_off_max") == 0)
-        {
-            rad_cut_off_max = atof(val.c_str());
-        }
     }
 
     cout << "Nsim = " << Nsim << endl;
@@ -154,7 +150,7 @@ int main(int argc, char **argv)
     cout << "IsLund = " << isLund << endl;
     cout << "Rad_corr = " << Rad_corr << endl;
     cout << "rad_cut_off_min = " << rad_cut_off_min << endl;
-    cout << "rad_cut_off_max = " << rad_cut_off_max << endl;
+
 
     cout << "**************************************************" << endl;
     cout << "*******"
@@ -269,7 +265,7 @@ int main(int argc, char **argv)
     tr1->Branch("Angle_g_lep_cm", &Angle_g_lep_cm, "Angle_g_lep_cm/D");
 
     /////////////Set Rad Corr Parameters//////////////
-    RadiativeCorrections Rad_corr_1(rad_cut_off_min, rad_cut_off_max);
+    RadiativeCorrections Rad_corr_1(rad_cut_off_min);
     /////////////////////////////////////////////////
 
     for (int i = 0; i < Nsim; i++)
@@ -331,8 +327,10 @@ int main(int argc, char **argv)
             L_ep.SetPxPyPzE(-Pl * sin_th * cos(phi_cm), -Pl * sin_th * sin(phi_cm), -Pl * cos_th, El);
 
             /////////////////Radiative correction///////////////////
+            //double
+            Rad_corr_1.Set_Inv_Mass(sqrt(Q2));
             bool in_rad_tail = (rand.Uniform(0, 1) > Rad_corr_1.Compute_cs_correction_factor(sqrt(Q2))); // randomly choose if the photon is above cut_off_min
-            // if(Rad_corr && in_rad_tail)
+            // the random number runs 
 
             if (Rad_corr && in_rad_tail)
                 Rad_corr_1.Soft_Photon_Emission(L_em, L_ep, L_rad_1, L_rad_2);
