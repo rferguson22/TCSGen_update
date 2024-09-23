@@ -18,6 +18,8 @@
 #include <KinFunctions.h>
 #include <TLorentzVector.h>
 #include "RadiativeCorrections.h"
+#include "TGenPhaseSpace.h"
+#include <vector>
 
 #include <cstdlib>
 #include <iostream>
@@ -161,15 +163,16 @@ int main(int argc, char **argv)
     const double radian = 57.2957795130823229;
     const double Mp = 0.9383;
     const double Me = 0.00051;
-    //  const double Minv_min = sqrt(Mp*Mp + 2*Mp*Eg_min ) - Mp;
+    const double Mtar=Mp;
+    //  const double Minv_min = sqrt(Mtar*Mtar + 2*Mtar*Eg_min ) - Mtar;
 
-    const double Minv_Egmin = sqrt(Mp * Mp + 2 * Mp * Eg_min) - Mp; // This is the maximum mass square that is accessible with a given Egmin,
+    const double Minv_Egmin = sqrt(Mtar * Mtar + 2 * Mtar * Eg_min) - Mtar; // This is the maximum mass square that is accessible with a given Egmin,
                                                                     // if the User specified MinvMin is above this value, then EgMin needs to be overwritten to a Eg, that will allow MinvMin production.
 
     if (Minv_Egmin < MinvMin)
     {
         double EgMinOld = Eg_min;
-        Eg_min = (MinvMin * MinvMin + 2 * Mp * MinvMin) / (2 * Mp);
+        Eg_min = (MinvMin * MinvMin + 2 * Mtar * MinvMin) / (2 * Mtar);
         cout << "With the given Eg_min, the mass " << MinvMin << " GeV is not reachable, so the Eg min will be adjusted from " << EgMinOld << " GeV to " << Eg_min << " GeV" << endl;
     }
 
@@ -178,12 +181,22 @@ int main(int argc, char **argv)
     TRandom2 rand;
     rand.SetSeed(seed);
 
-    TTCSKine tcs_kin1(Mp, Eb);
+    TTCSKine tcs_kin1(Mtar, Eb);
     TTCSCrs crs_lmlp;
 
-    TLorentzVector target(0., 0., 0., Mp);
+    TLorentzVector target(0., 0., 0., Mtar);
     TLorentzVector Lcm;
 
+    TLorentzVector beam(0.,0.,Eb,Eb);
+    TLorentzVector W=target+beam;
+
+    const std::vector<double> masses1234 = {0.};
+   // double masses2[3]={Me,Me,Mtar};    
+
+ //   TGenPhaseSpace event;
+   // event.SetDecay(W,3,masses);
+   // event.SetDecay(W,masses.size(),&masses[0]);
+  
     bool write_root = !isLund;
     TFile *file_out;
     ofstream Lund_out;
@@ -285,32 +298,32 @@ int main(int argc, char **argv)
                 Lund_out.open(Form("TCS_gen_%d.txt", file_number), ofstream::out);
             }
         }
-
+        
         double psf_Eg = Eg_max - Eg_min;
         Eg = rand.Uniform(Eg_min, Eg_min + psf_Eg);
         flux_factor = N_EPA(Eb, Eg, q2_cut) + N_Brem(Eg, Eb);
-        s = Mp * Mp + 2 * Mp * Eg;
-        double t_min = T_min(0., Mp * Mp, MinvMin2, Mp * Mp, s);
-        double t_max = T_max(0., Mp * Mp, MinvMin2, Mp * Mp, s);
+        s = Mtar * Mtar + 2 * Mtar * Eg;
+        double t_min = T_min(0., Mtar * Mtar, MinvMin2, Mtar * Mtar, s);
+        double t_max = T_max(0., Mtar * Mtar, MinvMin2, Mtar * Mtar, s);
         double psf_t = t_min - TMath::Max(t_max, t_lim);
 
         if (t_min > t_lim)
         {
             t = rand.Uniform(t_min - psf_t, t_min);
-            double Q2max = 2 * Mp * Eg + t - (Eg / Mp) * (2 * Mp * Mp - t - sqrt(t * t - 4 * Mp * Mp * t)); // Page 182 of my notebook. Derived using "Q2max = s + t - 2Mp**2 + u_max" relation
+            double Q2max = 2 * Mtar * Eg + t - (Eg / Mtar) * (2 * Mtar * Mtar - t - sqrt(t * t - 4 * Mtar * Mtar * t)); // Page 182 of my notebook. Derived using "Q2max = s + t - 2Mtar**2 + u_max" relation
 
             double psf_Q2 = Q2max - MinvMin2;
 
             Q2 = rand.Uniform(MinvMin2, MinvMin2 + psf_Q2);
 
-            double u = 2 * Mp * Mp + Q2 - s - t;
-            double th_qprime = acos((s * (t - u) - Mp * Mp * (Q2 - Mp * Mp)) / sqrt(Lambda(s, 0, Mp * Mp) * Lambda(s, Q2, Mp * Mp))); // Byukling Kayanti (4.9)
+            double u = 2 * Mtar * Mtar + Q2 - s - t;
+            double th_qprime = acos((s * (t - u) - Mtar * Mtar * (Q2 - Mtar * Mtar)) / sqrt(Lambda(s, 0, Mtar * Mtar) * Lambda(s, Q2, Mtar * Mtar))); // Byukling Kayanti (4.9)
             double th_pprime = PI + th_qprime;
 
-            double Pprime = 0.5 * sqrt(Lambda(s, Q2, Mp * Mp) / s); // Momentum in c.m. it is the same for q_pr and p_pr
+            double Pprime = 0.5 * sqrt(Lambda(s, Q2, Mtar * Mtar) / s); // Momentum in c.m. it is the same for q_pr and p_pr
 
-            Lcm.SetPxPyPzE(0., 0., Eg, Mp + Eg);
-            L_prot.SetPxPyPzE(Pprime * sin(th_pprime), 0., Pprime * cos(th_pprime), sqrt(Pprime * Pprime + Mp * Mp));
+            Lcm.SetPxPyPzE(0., 0., Eg, Mtar + Eg);
+            L_prot.SetPxPyPzE(Pprime * sin(th_pprime), 0., Pprime * cos(th_pprime), sqrt(Pprime * Pprime + Mtar * Mtar));
             L_gprime.SetPxPyPzE(Pprime * sin(th_qprime), 0., Pprime * cos(th_qprime), sqrt(Pprime * Pprime + Q2));
 
             double psf_cos_th = 2.; // cos(th):(-1 : 1)
@@ -388,7 +401,7 @@ int main(int argc, char **argv)
             if (isnan(crs_BH))
                 continue;
 
-            eta = Q2 / (2 * (s - Mp * Mp) - Q2);
+            eta = Q2 / (2 * (s - Mtar * Mtar) - Q2);
 
             if (Q2 < 9. && -t < 0.8 && eta < 0.8)
             {
@@ -445,7 +458,7 @@ int main(int argc, char **argv)
                 Lund_out << setw(15) << E_ep << setw(15) << Me << setw(15) << 0. << setw(15) << 0. << setw(15) << vz << "\n";
                 // Writing Proton
                 Lund_out << 3 << setw(5) << 1 << setw(5) << 1 << setw(7) << 2212 << setw(5) << 0 << setw(5) << 0 << setw(15) << px_prot << setw(15) << py_prot << setw(15) << pz_prot;
-                Lund_out << setw(15) << L_prot.E() << setw(15) << Mp << setw(15) << 0. << setw(15) << 0. << setw(15) << vz << "\n";
+                Lund_out << setw(15) << L_prot.E() << setw(15) << Mtar << setw(15) << 0. << setw(15) << 0. << setw(15) << vz << "\n";
                 // Writing Photons
                 Lund_out << 4 << setw(5) << 0 << setw(5) << 1 << setw(7) << 22 << setw(5) << 0 << setw(5) << 0 << setw(15) << px_rad_em << setw(15) << py_rad_em << setw(15) << pz_rad_em;
                 Lund_out << setw(15) << E_rad_em << setw(15) << 0.0 << setw(15) << 0. << setw(15) << 0. << setw(15) << vz << "\n";
