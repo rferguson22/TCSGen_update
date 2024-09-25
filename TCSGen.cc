@@ -190,11 +190,11 @@ int main(int argc, char **argv)
     TLorentzVector beam(0.,0.,Eb,Eb);
     TLorentzVector W=target+beam;
 
-    const std::vector<double> masses1234 = {0.};
-   // double masses2[3]={Me,Me,Mtar};    
+   // const std::vector<double> masses1234 = {0.};
+    double masses2[3]={Me,Me,Mtar};    
 
- //   TGenPhaseSpace event;
-   // event.SetDecay(W,3,masses);
+    TGenPhaseSpace event;
+    event.SetDecay(W,3,masses);
    // event.SetDecay(W,masses.size(),&masses[0]);
   
     bool write_root = !isLund;
