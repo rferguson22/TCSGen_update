@@ -20,6 +20,7 @@
 #include "RadiativeCorrections.h"
 #include "TGenPhaseSpace.h"
 #include <vector>
+#include <Targets.h>
 
 #include <cstdlib>
 #include <iostream>
@@ -163,7 +164,11 @@ int main(int argc, char **argv)
     const double radian = 57.2957795130823229;
     const double Mp = 0.9383;
     const double Me = 0.00051;
-    const double Mtar=Mp;
+  //  const double Mtar=Mp;
+
+    cross_section target;
+    Mtar = target.mass
+
     //  const double Minv_min = sqrt(Mtar*Mtar + 2*Mtar*Eg_min ) - Mtar;
 
     const double Minv_Egmin = sqrt(Mtar * Mtar + 2 * Mtar * Eg_min) - Mtar; // This is the maximum mass square that is accessible with a given Egmin,
@@ -187,14 +192,14 @@ int main(int argc, char **argv)
     TLorentzVector target(0., 0., 0., Mtar);
     TLorentzVector Lcm;
 
-    TLorentzVector beam(0.,0.,Eb,Eb);
-    TLorentzVector W=target+beam;
+   // TLorentzVector beam(0.,0.,Eb,Eb);
+   // TLorentzVector W=target+beam;
 
-   // const std::vector<double> masses1234 = {0.};
-    double masses2[3]={Me,Me,Mtar};    
+    //std::vector<double> masses1234 {0.};
+   // double masses2[3]={Me,Me,Mtar};    
 
-    TGenPhaseSpace event;
-    event.SetDecay(W,3,masses);
+    //TGenPhaseSpace event;
+    //event.SetDecay(W,3,masses2);
    // event.SetDecay(W,masses.size(),&masses[0]);
   
     bool write_root = !isLund;
@@ -396,7 +401,7 @@ int main(int argc, char **argv)
             psf = psf_t * psf_Q2 * psf_phi_lab * psf_cos_th * psf_phi_cm * psf_Eg;
 
             // crs_lmlp.Set_SQ2t(s, Q2, t);
-            crs_BH = crs_lmlp.Eval_BH(s, Q2, t, -1, (phi_cm * TMath::RadToDeg()), (acos(cos_th) * TMath::RadToDeg())); // -1: cros section is not weighted by L/L0
+            crs_BH = target.c_sec(s, Q2, t, -1, (phi_cm * TMath::RadToDeg()), (acos(cos_th) * TMath::RadToDeg())); // -1: cros section is not weighted by L/L0
 
             if (isnan(crs_BH))
                 continue;
