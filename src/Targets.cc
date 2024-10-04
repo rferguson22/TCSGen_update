@@ -32,7 +32,7 @@ double p_tar::f2(double t){
 
 	
 
-//Implementation of bette-heidler cross section for proton target
+//Implementation of bethe-heitler cross section for proton target
 p_BH::p_BH(){
 	p_tar tar;
 	mass=tar.mass;
