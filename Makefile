@@ -5,9 +5,9 @@ ROOT_CFLAGS     = $(shell ${ROOTSYS}/bin/root-config --cflags)
 ROOT_LIBS       = $(shell ${ROOTSYS}/bin/root-config --libs)
 libTCSGEN	= libTCSGen
 
-all:	    TCSGen.cc TTCSKine.o KinFuncs.o TTCSCrs.o GPDs.o RadCorr.o
+all:	    TCSGen.cc TTCSKine.o KinFuncs.o TTCSCrs.o GPDs.o RadCorr.o Targets.o
 	    mkdir -p lib ; rm -f lib/*.so
-	    $(CC) $(CC_Shared_FLAGS) -o lib/${libTCSGEN}.so.1.0.1 TTCSKine.o KinFuncs.o TTCSCrs.o GPDs.o RadCorr.o
+	    $(CC) $(CC_Shared_FLAGS) -o lib/${libTCSGEN}.so.1.0.1 TTCSKine.o KinFuncs.o TTCSCrs.o GPDs.o RadCorr.o Targets.o
 	    cd lib;\
 	    ln -sf ${libTCSGEN}.so.1.0.1 ${libTCSGEN}.so.1; ln -sf ${libTCSGEN}.so.1.0.1 ${libTCSGEN}.so
 	    cd ../;
@@ -28,6 +28,8 @@ KinFuncs.o: src/KinFunctions.cc include/KinFunctions.h
 RadCorr.o: src/RadiativeCorrections.cc include/RadiativeCorrections.h
 	    $(CC) $(CC_OBJ_FLAGS) src/RadiativeCorrections.cc -o $@ $(ROOT_CFLAGS) -I ./include
 
+Targets.o: src/Targets.cc include/Targets.h
+	    $(CC) $(CC_OBJ_FLAGS) src/Targets.cc -o $@ $(ROOT_CFLAGS) -I ./include
 
 
 clean:	    

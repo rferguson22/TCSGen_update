@@ -20,7 +20,7 @@
 #include "RadiativeCorrections.h"
 #include "TGenPhaseSpace.h"
 #include <vector>
-#include <Targets.h>
+#include "Targets.h"
 
 #include <cstdlib>
 #include <iostream>
@@ -166,8 +166,8 @@ int main(int argc, char **argv)
     const double Me = 0.00051;
   //  const double Mtar=Mp;
 
-    cross_section target;
-    Mtar = target.mass
+    p_BH  target;
+    double  Mtar = target.mass;
 
     //  const double Minv_min = sqrt(Mtar*Mtar + 2*Mtar*Eg_min ) - Mtar;
 
@@ -189,7 +189,7 @@ int main(int argc, char **argv)
     TTCSKine tcs_kin1(Mtar, Eb);
     TTCSCrs crs_lmlp;
 
-    TLorentzVector target(0., 0., 0., Mtar);
+//    TLorentzVector target(0., 0., 0., Mtar);
     TLorentzVector Lcm;
 
    // TLorentzVector beam(0.,0.,Eb,Eb);

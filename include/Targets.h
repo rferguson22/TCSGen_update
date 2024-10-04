@@ -5,9 +5,11 @@
 
 class cross_sections {
 public:
+	TTCSCrs ttcscrs;
+
 	int PID;
 	double mass;
-	double amm;
+	double mag_mom;
 	double c_sec(){
 		return 0;
 		};
@@ -21,14 +23,14 @@ public:
 
 class p_BH:public cross_sections {
 public:
-	TTCSCrs ttcscrs;
-
 	p_BH();
 
 	double c_sec(double a_s,double a_Q2, double a_t, double a_weight, double a_phi, double a_th);
 
 	double f1(double t);
+
+	double f2(double t);
 };
 
 
-#endif 
+#endif // TARGETS_H 
