@@ -30,6 +30,34 @@ double p_tar::f2(double t){
 }
 
 
+//Creation of neutron target class
+class n_tar : public cross_sections {
+public:
+	n_tar();
+	double f1(double t);
+	double f2(double t);
+};
+
+n_tar::n_tar(){
+	mass = 0.939565;
+	PID = 2112;
+	mag_mom = -1.913;
+}
+
+double n_tar::f1(double t){
+	return (1/((1-t/0.71)*(1-t/0.71)))*
+		(1/(1-t/(4*mass*mass)))*
+		(-mag_mom*t/(4*mass*mass));
+}
+
+double n_tar::f2(double t){
+	return (1./((1-t/0.71)))*
+		(1/(1-t/(4.*mass*mass) ))*
+		mag_mom;
+}
+
+
+
 	
 
 //Implementation of bethe-heitler cross section for proton target
@@ -51,7 +79,23 @@ double p_BH::c_sec(double a_s, double a_Q2, double a_t, double a_weight, double 
 
 
 
+//Implementation of bethe-heitler cross section for neutron target
+n_BH::n_BH(){
+	n_tar tar;
+	mass=tar.mass;
+	PID=tar.PID;
+}
 
+double n_BH::f1(double t){return n_tar().f1(t);}
+double n_BH::f2(double t){return n_tar().f2(t);}
+
+double n_BH::c_sec(double a_s, double a_Q2, double a_t, double a_weight, double a_phi, double a_th){
+        double f1p=this->f1(a_t);
+        double f2p=this->f2(a_t);
+
+        return ttcscrs.Eval_BH(a_s,a_Q2,a_t,a_weight,a_phi,a_th,f1p,f2p,mass);
+}
+ 
 
 
 

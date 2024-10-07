@@ -76,6 +76,9 @@ int main(int argc, char **argv)
     bool Rad_corr;
     double rad_cut_off_min;
     double rad_cut_off_max;
+    std::string target_type;
+    cross_sections* target = nullptr;
+
 
     for (map<std::string, std::string>::iterator it = m_Settings.begin(); it != m_Settings.end(); it++)
     {
@@ -141,6 +144,20 @@ int main(int argc, char **argv)
         }
     }
 
+    cout << "Type the target type, the available targets are p_BH, n_BH: ";
+    cin >> target_type;
+
+    if (target_type=="n_BH"){
+	target = new n_BH();
+    }
+    else if (target_type=="p_BH"){
+	target = new p_BH();
+    }
+    else {
+	cout<<"Unknown target type: "<<target_type<<endl;
+	exit(1);
+    }
+
     cout << "Nsim = " << Nsim << endl;
     cout << "Eb = " << Eb << endl;
     cout << "t_lim = " << t_lim << endl;
@@ -166,8 +183,8 @@ int main(int argc, char **argv)
     const double Me = 0.00051;
   //  const double Mtar=Mp;
 
-    p_BH  target;
-    double  Mtar = target.mass;
+    
+    double  Mtar = target->mass;
 
     //  const double Minv_min = sqrt(Mtar*Mtar + 2*Mtar*Eg_min ) - Mtar;
 
@@ -401,7 +418,7 @@ int main(int argc, char **argv)
             psf = psf_t * psf_Q2 * psf_phi_lab * psf_cos_th * psf_phi_cm * psf_Eg;
 
             // crs_lmlp.Set_SQ2t(s, Q2, t);
-            crs_BH = target.c_sec(s, Q2, t, -1, (phi_cm * TMath::RadToDeg()), (acos(cos_th) * TMath::RadToDeg())); // -1: cros section is not weighted by L/L0
+            crs_BH = target->c_sec(s, Q2, t, -1, (phi_cm * TMath::RadToDeg()), (acos(cos_th) * TMath::RadToDeg())); // -1: cros section is not weighted by L/L0
 
             if (isnan(crs_BH))
                 continue;
