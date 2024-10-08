@@ -1,50 +1,52 @@
 #ifndef TARGETS_H
 #define TARGETS_H
 
-#include <TTCSCrs.h>
+#include "cross_sections.h"  // Include the base class
+#include <vector>
+#include <string>
+#include <iostream>
 
-class cross_sections {
+class ClassRegistry {
 public:
-	TTCSCrs ttcscrs;
-
-	int PID;
-	double mass;
-	double mag_mom;
-	virtual double c_sec(){return 0;};
-	virtual double c_sec(double a_s,double a_Q2, double a_t, double a_weight, double a_phi, double a_th){return 0;};
-
-	virtual double f1(){return 0;};
-	virtual double f2(){return 0;};
+	static void registerClass(const std::string& className) {
+		 getClassNames().push_back(className);
+	 }
+    
+	static const std::vector<std::string>& getClassNames() {
+		return getClassNamesInternal();
+	 }
+private:
+	static std::vector<std::string>& getClassNamesInternal() {
+		static std::vector<std::string> classNames;
+		 return classNames;
+	}
 };
 
-class p_BH:public cross_sections {
+class p_tar : public cross_sections {
 public:
-	p_BH();
+	mass = 0.938;
+	PID = 2212;
+	mag_mom = 1.410;
 
-	double c_sec(double a_s,double a_Q2, double a_t, double a_weight, double a_phi, double a_th) override;
+	p_tar() {
+		ClassRegistry::registerClass(className());
+	}
 
-	double f1(double t);
-
-	double f2(double t);
+	virtual std::string className() const override { return "p_tar"; }
 };
 
-class n_BH:public cross_sections {
+class n_tar : public cross_sections {
 public:
-	n_BH();
+	mass = 0.939;
+	PID = 2112;
+	mag_mom = -1.913;
 
-	double c_sec(double a_s, double a_Q2, double a_t, double a_weight, double a_phi, double a_th) override;
+	n_tar() {
+		ClassRegistry::registerClass(className())
+	}
 
-
-	double f1(double t);
-
-	double f2(double t);
+	virtual std::string className() const override { return "n_tar"; }
 };
 
 
-
-
-
-
-
-
-#endif // TARGETS_H 
+#endif // TARGETS_H
