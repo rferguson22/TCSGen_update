@@ -1,52 +1,37 @@
 #ifndef TARGETS_H
 #define TARGETS_H
 
-#include "cross_sections.h"  // Include the base class
-#include <vector>
-#include <string>
-#include <iostream>
+#include "CrossSecMaster.h"  
 
-class ClassRegistry {
+class p_tar : public cross_section {
 public:
-	static void registerClass(const std::string& className) {
-		 getClassNames().push_back(className);
-	 }
-    
-	static const std::vector<std::string>& getClassNames() {
-		return getClassNamesInternal();
-	 }
-private:
-	static std::vector<std::string>& getClassNamesInternal() {
-		static std::vector<std::string> classNames;
-		 return classNames;
+	p_tar(){
+		mass = 0.9383;
+		PID = 2212;
+		mag_mom = 2.793;
 	}
+	
+protected:
+	double mass;
+	int PID;
+	double mag_mom;
 };
 
-class p_tar : public cross_sections {
+class n_tar : public cross_section {
 public:
-	mass = 0.938;
-	PID = 2212;
-	mag_mom = 1.410;
+	n_tar(){
+                mass = 0.939565;
+                PID = 2112;
+                mag_mom = -1.913;
+        }
 
-	p_tar() {
-		ClassRegistry::registerClass(className());
-	}
-
-	virtual std::string className() const override { return "p_tar"; }
+protected:
+        double mass;
+        int PID;
+        double mag_mom;
 };
 
-class n_tar : public cross_sections {
-public:
-	mass = 0.939;
-	PID = 2112;
-	mag_mom = -1.913;
 
-	n_tar() {
-		ClassRegistry::registerClass(className())
-	}
-
-	virtual std::string className() const override { return "n_tar"; }
-};
-
+vector<string> valid_targets = {"p_tar","n_tar"};
 
 #endif // TARGETS_H

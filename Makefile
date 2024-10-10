@@ -5,9 +5,9 @@ ROOT_CFLAGS     = $(shell ${ROOTSYS}/bin/root-config --cflags)
 ROOT_LIBS       = $(shell ${ROOTSYS}/bin/root-config --libs)
 libTCSGEN	= libTCSGen
 
-all:	    TCSGen.cc TTCSKine.o KinFuncs.o TTCSCrs.o GPDs.o RadCorr.o Targets.o
+all:	    TCSGen.cc TTCSKine.o KinFuncs.o TTCSCrs.o GPDs.o RadCorr.o
 	    mkdir -p lib ; rm -f lib/*.so
-	    $(CC) $(CC_Shared_FLAGS) -o lib/${libTCSGEN}.so.1.0.1 TTCSKine.o KinFuncs.o TTCSCrs.o GPDs.o RadCorr.o Targets.o
+	    $(CC) $(CC_Shared_FLAGS) -o lib/${libTCSGEN}.so.1.0.1 TTCSKine.o KinFuncs.o TTCSCrs.o GPDs.o RadCorr.o 
 	    cd lib;\
 	    ln -sf ${libTCSGEN}.so.1.0.1 ${libTCSGEN}.so.1; ln -sf ${libTCSGEN}.so.1.0.1 ${libTCSGEN}.so
 	    cd ../;
@@ -28,9 +28,17 @@ KinFuncs.o: src/KinFunctions.cc include/KinFunctions.h
 RadCorr.o: src/RadiativeCorrections.cc include/RadiativeCorrections.h
 	    $(CC) $(CC_OBJ_FLAGS) src/RadiativeCorrections.cc -o $@ $(ROOT_CFLAGS) -I ./include
 
-Targets.o: src/Targets.cc include/Targets.h
-	    $(CC) $(CC_OBJ_FLAGS) src/Targets.cc -o $@ $(ROOT_CFLAGS) -I ./include
+CrossSecMaster.o: include/CrossSecMaster.h
+	    $(CC) $(CC_OBJ_FLAGS) include/CrossSecMaster.h -o $@ $(ROOT_CFLAGS) -I ./include
 
+CrossSecFormulae.o: include/CrossSecFormulae.h
+	    $(CC) $(CC_OBJ_FLAGS) include/CrossSecFormulae.h -o $@ $(ROOT_CFLAGS) -I ./include
+
+Targets.o: include/Targets.h
+	    $(CC) $(CC_OBJ_FLAGS) include/Targets.h -o $@ $(ROOT_CFLAGS) -I ./include
+
+Models.o: include/Models.h
+	    $(CC) $(CC_OBJ_FLAGS) include/Models.h -o $@ $(ROOT_CFLAGS) -I ./include
 
 clean:	    
 	    rm -f TCSGen.exe *.o lib/*.so.* lib/*.so

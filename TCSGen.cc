@@ -20,10 +20,13 @@
 #include "RadiativeCorrections.h"
 #include "TGenPhaseSpace.h"
 #include <vector>
-#include "Targets.h"
+#include "CrossSecMaster.h"
+#include "Models.h"
+#include "CrossSecFormulae.h"
 
 #include <cstdlib>
 #include <iostream>
+#include <algorithm>
 
 using namespace std;
 using namespace KinFuncs;
@@ -76,9 +79,7 @@ int main(int argc, char **argv)
     bool Rad_corr;
     double rad_cut_off_min;
     double rad_cut_off_max;
-    std::string target_type;
-    cross_sections* target = nullptr;
-
+    
 
     for (map<std::string, std::string>::iterator it = m_Settings.begin(); it != m_Settings.end(); it++)
     {
@@ -144,19 +145,43 @@ int main(int argc, char **argv)
         }
     }
 
-    cout << "Type the target type, the available targets are p_BH, n_BH: ";
-    cin >> target_type;
+    cout << "Valid targets are: ";
+    for (const string& name : valid_targets){
+	cout << name << " ";
+    }
+    cout << endl;
 
-    if (target_type=="n_BH"){
-	target = new n_BH();
+    string target_input;
+    cout << "Enter the target type: ";
+    cin  >> target_input;
+
+    if(find(valid_targets.begin(),valid_targets.end(),target_input)==valid_targets.end()){
+	cout << "Invalid target type." << endl;
+	return 0;
     }
-    else if (target_type=="p_BH"){
-	target = new p_BH();
+
+    cout << "Valid models for "<< target_input<<" are: ";
+    vector<string> valid_models = get_valid_models();
+    for (const string& type : valid_models){
+	cout<<type<<" ";
+    } 
+    cout<<endl;
+
+    string model_input;
+    cout>>"Enter the model: ";
+    cin>>model_input;
+
+    string c_sec_input;
+    cout>>"Enter the cross section type: ";
+    cin>>c_sec_input;
+
+    if(find(valid_c_sec.begin(),valid_c_sec.end(),c_sec_input)==valid_c_sec.end()){
+        cout << "Invalid cross section type." << endl;
+        return 0;
     }
-    else {
-	cout<<"Unknown target type: "<<target_type<<endl;
-	exit(1);
-    }
+    
+    shared_ptr<cross_section> target=create_target(c_sec_input,model_input);
+
 
     cout << "Nsim = " << Nsim << endl;
     cout << "Eb = " << Eb << endl;
