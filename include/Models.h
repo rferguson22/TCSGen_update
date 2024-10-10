@@ -4,6 +4,7 @@
 #include "Targets.h"
 #include <memory>
 #include <vector>
+#include <string>
 
 
 class model_proton : public p_tar {
@@ -122,17 +123,17 @@ const string model_neutron_test::type_name = "model_neutron_test";
 shared_ptr<cross_section> cross_target::create_target(const string& c_sec_type,const string& model_type) {
 	shared_ptr<cross_section> target;
 
-	if (type == "model_proton"){
+	if (model_type == "model_proton"){
 		return make_shared<model_proton>();
 	}
-	else if (type == "model_proton_test"){
-		return make_shared<model_proton_test>():
+	else if (model_type == "model_proton_test"){
+		return make_shared<model_proton_test>();
 	}
-	else if (type == "model_neutron"){
-                return make_shared<model_neutron>():
+	else if (model_type == "model_neutron"){
+                return make_shared<model_neutron>();
         }
-	else if (type == "model_neutron_test"){
-                return make_shared<model_neutron_test>():
+	else if (model_type == "model_neutron_test"){
+                return make_shared<model_neutron_test>();
         }
 	else{
 		return nullptr;

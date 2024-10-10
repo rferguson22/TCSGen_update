@@ -6,7 +6,6 @@
 #include <memory>
 #include <vector>
 #include <iostream>
-using namespace std;
 
 class cross_section {
 protected:
@@ -21,7 +20,7 @@ public:
         virtual double c_sec(){return 0;};
         virtual double f1(){return 0;};
         virtual double f2(){return 0;};
-	virtual string get_type() const =0;
+	virtual std::string get_type() const =0;
 
 };
 

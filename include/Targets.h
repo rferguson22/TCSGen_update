@@ -2,6 +2,9 @@
 #define TARGETS_H
 
 #include "CrossSecMaster.h"  
+#include <vector>
+#include <string>
+
 
 class p_tar : public cross_section {
 public:
@@ -10,11 +13,6 @@ public:
 		PID = 2212;
 		mag_mom = 2.793;
 	}
-	
-protected:
-	double mass;
-	int PID;
-	double mag_mom;
 };
 
 class n_tar : public cross_section {
@@ -24,11 +22,6 @@ public:
                 PID = 2112;
                 mag_mom = -1.913;
         }
-
-protected:
-        double mass;
-        int PID;
-        double mag_mom;
 };
 
 

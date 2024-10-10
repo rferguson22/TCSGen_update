@@ -23,6 +23,7 @@
 #include "CrossSecMaster.h"
 #include "Models.h"
 #include "CrossSecFormulae.h"
+#include <string>
 
 #include <cstdlib>
 #include <iostream>
