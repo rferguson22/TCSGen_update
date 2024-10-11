@@ -18,8 +18,10 @@ public:
 	virtual ~cross_section()=default;
 
         virtual double c_sec(){return 0;};
-        virtual double f1(){return 0;};
-        virtual double f2(){return 0;};
+	virtual double c_sec(double a_s, double a_Q2, double a_t,double a_weight, double a_phi, double a_th ){return 0;};
+
+        virtual double f1(double t,...){return 0;};
+        virtual double f2(double t,...){return 0;};
 	virtual std::string get_type() const =0;
 
 };

@@ -19,10 +19,12 @@ public:
 
 		return ttcscrs.Eval_BH(a_s,a_Q2,a_t,a_weight,a_phi,a_th,f1p,f2p,m);
 	}
+
+	using cross_section::c_sec;
 };
 
 std::vector<std::string> get_valid_cross_sec(){
 	return {"BH"};
-}
+};
 
 #endif //CROSSSECFORMULAE_H

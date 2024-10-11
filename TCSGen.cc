@@ -171,6 +171,13 @@ int main(int argc, char **argv)
     string model_input;
     cout<<"Enter the model: ";
     cin>>model_input;
+    
+    cout<<"Valid cross section types are: ";
+    vector<string> valid_c_secs = get_valid_cross_sec();
+    for (const string& name: valid_c_secs){
+	cout<<name<<" ";
+    }
+    cout<<endl;
 
     string c_sec_input;
     cout<<"Enter the cross section type: ";
@@ -182,7 +189,7 @@ int main(int argc, char **argv)
         return 0;
     }
     
-    corss_target target_creator
+    cross_target target_creator;
     shared_ptr<cross_section> target=target_creator.create_target(c_sec_input,model_input);
 
 
