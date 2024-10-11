@@ -7,19 +7,21 @@
 #include <string>
 
 class BH : public cross_section {
+private:
+	std::shared_ptr<cross_section> target;
 public:
-	BH(shared_ptr<cross_section> target){}
+	BH(std::shared_ptr<cross_section> target):target(target){}
 
-	double c_sec(double a_s, double a_Q2, double a_t, double a_weight, double a_phi, double a_th) override{
-		double f1p = target->f1(a_t);
-		double f2p = target->f2(a_t);
-		double m = target->mass;		
+	double c_sec(double a_s, double a_Q2, double a_t, double a_weight, double a_phi, double a_th){
+		double f1p = this->f1(a_t);
+		double f2p = this->f2(a_t);
+		double m = this->mass;		
 
 		return ttcscrs.Eval_BH(a_s,a_Q2,a_t,a_weight,a_phi,a_th,f1p,f2p,m);
 	}
 };
 
-vector<string> get_valid_cross_sec(){
+std::vector<std::string> get_valid_cross_sec(){
 	return {"BH"};
 }
 

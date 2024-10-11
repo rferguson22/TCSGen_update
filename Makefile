@@ -28,17 +28,5 @@ KinFuncs.o: src/KinFunctions.cc include/KinFunctions.h
 RadCorr.o: src/RadiativeCorrections.cc include/RadiativeCorrections.h
 	    $(CC) $(CC_OBJ_FLAGS) src/RadiativeCorrections.cc -o $@ $(ROOT_CFLAGS) -I ./include
 
-CrossSecMaster.o: include/CrossSecMaster.h
-	    $(CC) $(CC_OBJ_FLAGS) include/CrossSecMaster.h -o $@ $(ROOT_CFLAGS) -I ./include
-
-CrossSecFormulae.o: include/CrossSecFormulae.h
-	    $(CC) $(CC_OBJ_FLAGS) include/CrossSecFormulae.h -o $@ $(ROOT_CFLAGS) -I ./include
-
-Targets.o: include/Targets.h
-	    $(CC) $(CC_OBJ_FLAGS) include/Targets.h -o $@ $(ROOT_CFLAGS) -I ./include
-
-Models.o: include/Models.h
-	    $(CC) $(CC_OBJ_FLAGS) include/Models.h -o $@ $(ROOT_CFLAGS) -I ./include
-
 clean:	    
 	    rm -f TCSGen.exe *.o lib/*.so.* lib/*.so

@@ -8,11 +8,11 @@
 #include <iostream>
 
 class cross_section {
-protected:
+public:
         int PID;
         double mass;
         double mag_mom;
-public:
+
 	TTCSCrs ttcscrs;
 	
 	virtual ~cross_section()=default;
@@ -24,5 +24,10 @@ public:
 
 };
 
+class cross_target{
+public:
+	std::shared_ptr<cross_section>create_target(const std::string& c_sec_type,const std::string& model_type);
+};
+	
 
 #endif //CROSSSECMASTER_H

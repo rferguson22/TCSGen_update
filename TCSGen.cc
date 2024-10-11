@@ -169,19 +169,21 @@ int main(int argc, char **argv)
     cout<<endl;
 
     string model_input;
-    cout>>"Enter the model: ";
+    cout<<"Enter the model: ";
     cin>>model_input;
 
     string c_sec_input;
-    cout>>"Enter the cross section type: ";
+    cout<<"Enter the cross section type: ";
     cin>>c_sec_input;
 
+    vector<string> valid_c_sec =get_valid_cross_sec();
     if(find(valid_c_sec.begin(),valid_c_sec.end(),c_sec_input)==valid_c_sec.end()){
         cout << "Invalid cross section type." << endl;
         return 0;
     }
     
-    shared_ptr<cross_section> target=create_target(c_sec_input,model_input);
+    corss_target target_creator
+    shared_ptr<cross_section> target=target_creator.create_target(c_sec_input,model_input);
 
 
     cout << "Nsim = " << Nsim << endl;

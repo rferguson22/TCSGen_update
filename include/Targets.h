@@ -24,7 +24,6 @@ public:
         }
 };
 
-
-vector<string> valid_targets = {"p_tar","n_tar"};
+std::vector<std::string> valid_targets = {"p_tar","n_tar"};
 
 #endif // TARGETS_H
