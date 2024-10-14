@@ -120,13 +120,15 @@ double TTCSCrs::INT_crs_section(double *x, double *par) {
     double ReE = par[8];
     double ImHtild = par[9];
     double ReHtild = par[10];
-    double Dterm = par[11];
-    
-    double F1p = par[12];
-    double F2p = par[13];
-    double M_tar = par[14];
+   
+    double F1p = par[11];
+    double F2p = par[12];
+    double M_tar = par[13];
 
 
+
+    double Dterm = par[14];
+ 
     double sigma = 1.;
 
     double beta = sqrt(1 - (4 * m_e * m_e) / Q2);
@@ -177,8 +179,8 @@ double TTCSCrs::Eval_BH(double a_phi, double a_th) const {
 
 double TTCSCrs::Eval_BH(double a_s, double a_Q2, double a_t, double a_weight, double a_phi, double a_th, double f1p, double f2p, double m_tar) const {
 
-    f_BH->SetParameters(a_s, a_Q2, a_t);
-    return f_BH->Eval(a_phi, a_th,f1p,f2p,m_tar);
+    f_BH->SetParameters(a_s, a_Q2, a_t,f1p,f2p,m_tar);
+    return f_BH->Eval(a_phi, a_th);
 
 }
 
