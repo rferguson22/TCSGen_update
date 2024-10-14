@@ -273,7 +273,7 @@ int main(int argc, char **argv)
 
     //================= Definition of Tree Variables =================
     double Eg, Minv, t, Q2, s, eta;
-    double psf, crs_BH, crs_INT, crs_int;
+    double psf, crs_BH, crs_INT, crs_int,crs;
     double psf_flux, flux_factor;
     TLorentzVector L_em, L_ep, L_prot, L_rad_1, L_rad_2;
     TLorentzVector L_gprime;
@@ -454,22 +454,7 @@ int main(int argc, char **argv)
             psf = psf_t * psf_Q2 * psf_phi_lab * psf_cos_th * psf_phi_cm * psf_Eg;
 
             // crs_lmlp.Set_SQ2t(s, Q2, t);
-            crs_BH = target->c_sec(s, Q2, t, -1, (phi_cm * TMath::RadToDeg()), (acos(cos_th) * TMath::RadToDeg()),1.); // -1: cros section is not weighted by L/L0
-
-            if (isnan(crs_BH))
-                continue;
-
-            eta = Q2 / (2 * (s - Mtar * Mtar) - Q2);
-
-            if (Q2 < 9. && -t < 0.8 && eta < 0.8)
-            {
-                crs_INT = crs_lmlp.Eval_INT(s, Q2, t, -1., (phi_cm * TMath::RadToDeg()), (acos(cos_th) * TMath::RadToDeg()), 2.); // the last argumen "1" is the sc_D
-                // crs_INT = crs_lmlp.Eval_INT( tcs_kin1.GetPhi_cm(), tcs_kin1.GetTheta_cm(), 1.); //the last argumen "1" is the sc_D
-            }
-            else
-            {
-                crs_INT = 0;
-            }
+            crs = target->c_sec(s, Q2, t, -1, (phi_cm * TMath::RadToDeg()), (acos(cos_th) * TMath::RadToDeg()),2.); // -1: cros section is not weighted by L/L0
 
             double vz = rand.Uniform(vz_min, vz_max);
 
@@ -507,7 +492,7 @@ int main(int argc, char **argv)
             else
             {
                 // Writing Header
-                Lund_out << 5 << setw(5) << 1 << setw(5) << 1 << setw(5) << 0 << " " << setw(5) << "  " << psf << " " << setw(15) << 0 << setw(15) << flux_factor << setw(15) << 0 << setw(5) << 0 << setw(5) << " " << crs_BH << "\n"; // Writing Proton
+                Lund_out << 5 << setw(5) << 1 << setw(5) << 1 << setw(5) << 0 << " " << setw(5) << "  " << psf << " " << setw(15) << 0 << setw(15) << flux_factor << setw(15) << 0 << setw(5) << 0 << setw(5) << " " << crs << "\n"; // Writing Proton
                 // Writing Electron
                 Lund_out << 1 << setw(5) << -1 << setw(5) << 1 << setw(7) << 11 << setw(5) << 0 << setw(5) << 0 << setw(15) << px_em << setw(15) << py_em << setw(15) << pz_em;
                 Lund_out << setw(15) << E_em << setw(15) << Me << setw(15) << 0. << setw(15) << 0. << setw(15) << vz << "\n";

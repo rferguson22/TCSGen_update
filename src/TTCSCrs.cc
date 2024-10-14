@@ -120,12 +120,10 @@ double TTCSCrs::INT_crs_section(double *x, double *par) {
     double ReE = par[8];
     double ImHtild = par[9];
     double ReHtild = par[10];
-   
+       
     double F1p = par[11];
     double F2p = par[12];
     double M_tar = par[13];
-
-
 
     double Dterm = par[14];
  
@@ -202,7 +200,7 @@ double TTCSCrs::Eval_INT(double a_phi, double a_th, double a_sc_D) const {
     return f_INT->Eval(a_phi, a_th);
 }
 
-double TTCSCrs::Eval_INT(double a_s, double a_Q2, double a_t, double a_weight, double a_phi, double a_th, double a_sc_D,double f1p,double f2p,double m_tar) const {
+double TTCSCrs::Eval_INT(double a_s, double a_Q2, double a_t, double a_weight, double a_phi, double a_th, double a_sc_D,double f1p,double f2p, double m_tar) const {
     double eta = a_Q2 / (2 * (a_s - M_p * M_p) - a_Q2);
     gp->Set_q2_t_eta(a_Q2, a_t, eta);
 
@@ -215,7 +213,8 @@ double TTCSCrs::Eval_INT(double a_s, double a_Q2, double a_t, double a_weight, d
     double Dterm = gp->GetDterm();
     //  cout<<"ImH   ReH  ImE  ReE  ImHtild ReHtild Dterm  "<<ImH<<"   "<<ReH<<"   "<<ImE<<"   "<<ReE<<"   "<<ImHtild<<"   "<<ReHtild<<"   "<<Dterm<<endl;
 
-    f_INT->SetParameters(a_s, a_Q2, a_t, a_sc_D, a_weight, ImH, ReH, ImE, ReE, ImHtild, ReHtild,f1p,f2p,m_tar);
+    f_INT->SetParameters(a_s, a_Q2, a_t, a_sc_D, a_weight, ImH, ReH, ImE, ReE, ImHtild, ReHtild);
+    f_INT->SetParameters(f1p,f2p,m_tar);
     f_INT->SetParameter(11, Dterm);
     return f_INT->Eval(a_phi, a_th);
 }
