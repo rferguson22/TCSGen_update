@@ -118,6 +118,11 @@ public:
 const std::string model_neutron_test::type_name = "model_neutron_test";
 
 
+std::map<std::string, std::vector<std::shared_ptr<cross_section>>> target_models = {
+	{"p_tar", {std::make_shared<model_proton(),
+		   std::make_shared<model_proton_test>()}},
+	{"n_tar", {std::make_shared<model_neutron(),
+		   std::make_shared<model_neutron_test>()}},
 
 
 std::shared_ptr<cross_section> cross_target::create_target(const std::string& c_sec_type,const std::string& model_type) {

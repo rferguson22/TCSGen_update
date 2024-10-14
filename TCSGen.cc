@@ -162,10 +162,18 @@ int main(int argc, char **argv)
     }
 
     cout << "Valid models for "<< target_input<<" are: ";
-    vector<string> valid_models = get_valid_models();
+
+
+    const auto& models = target_models[target_input];
+    for (const auto& model :_models){
+	cout<<model->get_type()<<" ";
+    } 
+    cout<<endl;
+
+    vector<string> valid_models=get_valid_models();
     for (const string& type : valid_models){
 	cout<<type<<" ";
-    } 
+    }
     cout<<endl;
 
     string model_input;
@@ -250,7 +258,7 @@ int main(int argc, char **argv)
     //std::vector<double> masses1234 {0.};
    // double masses2[3]={Me,Me,Mtar};    
 
-    //TGenPhaseSpace event;
+    //TGenPhaseSpace vent;
     //event.SetDecay(W,3,masses2);
    // event.SetDecay(W,masses.size(),&masses[0]);
   
