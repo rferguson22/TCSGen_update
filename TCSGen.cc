@@ -156,7 +156,7 @@ int main(int argc, char **argv)
     cout << "Enter the target type: ";
     cin  >> target_input;
 
-    if(find(valid_targets.begin(),valid_targets.end(),target_input)==valid_targets.end()){
+    if (target_models.find(target_input)==target_models.end()){
 	cout << "Invalid target type." << endl;
 	return 0;
     }
@@ -165,15 +165,9 @@ int main(int argc, char **argv)
 
 
     const auto& models = target_models[target_input];
-    for (const auto& model :_models){
+    for (const auto& model : models){
 	cout<<model->get_type()<<" ";
     } 
-    cout<<endl;
-
-    vector<string> valid_models=get_valid_models();
-    for (const string& type : valid_models){
-	cout<<type<<" ";
-    }
     cout<<endl;
 
     string model_input;
@@ -181,8 +175,8 @@ int main(int argc, char **argv)
     cin>>model_input;
     
     cout<<"Valid cross section types are: ";
-    vector<string> valid_c_secs = get_valid_cross_sec();
-    for (const string& name: valid_c_secs){
+    vector<string> valid_c_sec = get_valid_cross_sec();
+    for (const string& name: valid_c_sec){
 	cout<<name<<" ";
     }
     cout<<endl;
@@ -191,7 +185,6 @@ int main(int argc, char **argv)
     cout<<"Enter the cross section type: ";
     cin>>c_sec_input;
 
-    vector<string> valid_c_sec =get_valid_cross_sec();
     if(find(valid_c_sec.begin(),valid_c_sec.end(),c_sec_input)==valid_c_sec.end()){
         cout << "Invalid cross section type." << endl;
         return 0;
