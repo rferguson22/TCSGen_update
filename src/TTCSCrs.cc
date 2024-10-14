@@ -121,32 +121,37 @@ double TTCSCrs::INT_crs_section(double *x, double *par) {
     double ImHtild = par[9];
     double ReHtild = par[10];
     double Dterm = par[11];
+    
+    double F1p = par[12];
+    double F2p = par[13];
+    double M_tar = par[14];
+
 
     double sigma = 1.;
 
     double beta = sqrt(1 - (4 * m_e * m_e) / Q2);
-    double r = sqrt((s - Q2 - M_p * M_p)*(s - Q2 - M_p * M_p) - 4 * Q2 * M_p * M_p);
-    double tau = Q2 / (s - M_p * M_p);
+    double r = sqrt((s - Q2 - M_tar * M_tar)*(s - Q2 - M_tar * M_tar) - 4 * Q2 * M_tar * M_tar);
+    double tau = Q2 / (s - M_tar * M_tar);
     double eta = tau / (2 - tau);
-    double cos_TH_Cm = (2 * s * (t - 2 * M_p * M_p) + (s + M_p * M_p)*(s + M_p * M_p - Q2)) / sqrt(Lambda(s, M_p*M_p, 0) * Lambda(s, M_p*M_p, Q2));
+    double cos_TH_Cm = (2 * s * (t - 2 * M_tar * M_tar) + (s + M_tar * M_tar)*(s + M_tar * M_tar - Q2)) / sqrt(Lambda(s, M_tar*M_tar, 0) * Lambda(s, M_tar*M_tar, Q2));
     double sin_TH_Cm = sqrt(1 - cos_TH_Cm * cos_TH_Cm);
     double Delta_Perp = sin_TH_Cm * r / (2 * sqrt(s));
     //double Delta_Perp = sqrt((-t)*(1 - tau) - tau*tau*M_p*M_p );
     double a = beta * r * cos(theta);
-    double b = sigma * beta * sqrt((Q2 - t)*(Q2 - t) - TMath::Power((2 * (s - M_p * M_p) * sqrt(Q2) * Delta_Perp) / r, 2)) * cos(theta) -
-            beta * ((2 * (s - M_p * M_p) * sqrt(Q2) * Delta_Perp) / r) * sin(theta) * cos(phi);
+    double b = sigma * beta * sqrt((Q2 - t)*(Q2 - t) - TMath::Power((2 * (s - M_tar * M_tar) * sqrt(Q2) * Delta_Perp) / r, 2)) * cos(theta) -
+            beta * ((2 * (s - M_tar * M_tar) * sqrt(Q2) * Delta_Perp) / r) * sin(theta) * cos(phi);
     double L_BH = ((Q2 - t)*(Q2 - t) - b * b) / 4.;
     double L0_BH = Q2 * Q2 * sin(theta) * sin(theta) / 4.;
 
-    double F1p = (1. / ((1 - t / 0.71)*(1 - t / 0.71)))*(1 / (1 - t / (4. * M_p * M_p)))*(1 - 2.79 * t / (4 * M_p * M_p));
-    double F2p = (1. / ((1 - t / 0.71)*(1 - t / 0.71)))*(1 / (1 - t / (4. * M_p * M_p)))*(ammp - 1);
+    //double F1p = (1. / ((1 - t / 0.71)*(1 - t / 0.71)))*(1 / (1 - t / (4. * M_p * M_p)))*(1 - 2.79 * t / (4 * M_p * M_p));
+    //double F2p = (1. / ((1 - t / 0.71)*(1 - t / 0.71)))*(1 / (1 - t / (4. * M_p * M_p)))*(ammp - 1);
     //double F1n = (1./((1 - t/0.71)*(1 - t/0.71)))*(1/(1 - t/(4.*M_p*M_p) ))*(-ammn*t/(4*M_p*M_p));
     //double F2n = (1./((1 - t/0.71)*(1 - t/0.71)))*(1/(1 - t/(4.*M_p*M_p) ))*ammn;
 
-    double t_min = -4 * eta * eta * M_p * M_p / (1 - eta * eta);
+    double t_min = -4 * eta * eta * M_tar * M_tar / (1 - eta * eta);
 
-    double M2_int = 2 * sqrt(t_min - t) / M_p * (1 - eta) / (1 + eta)*(F1p * (ReH + sc_D * Dterm) - eta * (F1p + F2p) * ReHtild -
-            (t / (4 * M_p * M_p)) * F2p * (ReE - sc_D * Dterm));
+    double M2_int = 2 * sqrt(t_min - t) / M_tar * (1 - eta) / (1 + eta)*(F1p * (ReH + sc_D * Dterm) - eta * (F1p + F2p) * ReHtild -
+            (t / (4 * M_tar * M_tar)) * F2p * (ReE - sc_D * Dterm));
 
     if (par[4] == 1) {
         weight = L_BH / L0_BH;
@@ -172,8 +177,8 @@ double TTCSCrs::Eval_BH(double a_phi, double a_th) const {
 
 double TTCSCrs::Eval_BH(double a_s, double a_Q2, double a_t, double a_weight, double a_phi, double a_th, double f1p, double f2p, double m_tar) const {
 
-    f_BH->SetParameters(a_s, a_Q2, a_t, a_weight,f1p,f2p,m_tar);
-    return f_BH->Eval(a_phi, a_th);
+    f_BH->SetParameters(a_s, a_Q2, a_t);
+    return f_BH->Eval(a_phi, a_th,f1p,f2p,m_tar);
 
 }
 
@@ -195,7 +200,7 @@ double TTCSCrs::Eval_INT(double a_phi, double a_th, double a_sc_D) const {
     return f_INT->Eval(a_phi, a_th);
 }
 
-double TTCSCrs::Eval_INT(double a_s, double a_Q2, double a_t, double a_weight, double a_phi, double a_th, double a_sc_D) const {
+double TTCSCrs::Eval_INT(double a_s, double a_Q2, double a_t, double a_weight, double a_phi, double a_th, double a_sc_D,double f1p,double f2p,double m_tar) const {
     double eta = a_Q2 / (2 * (a_s - M_p * M_p) - a_Q2);
     gp->Set_q2_t_eta(a_Q2, a_t, eta);
 
@@ -208,7 +213,7 @@ double TTCSCrs::Eval_INT(double a_s, double a_Q2, double a_t, double a_weight, d
     double Dterm = gp->GetDterm();
     //  cout<<"ImH   ReH  ImE  ReE  ImHtild ReHtild Dterm  "<<ImH<<"   "<<ReH<<"   "<<ImE<<"   "<<ReE<<"   "<<ImHtild<<"   "<<ReHtild<<"   "<<Dterm<<endl;
 
-    f_INT->SetParameters(a_s, a_Q2, a_t, a_sc_D, a_weight, ImH, ReH, ImE, ReE, ImHtild, ReHtild);
+    f_INT->SetParameters(a_s, a_Q2, a_t, a_sc_D, a_weight, ImH, ReH, ImE, ReE, ImHtild, ReHtild,f1p,f2p,m_tar);
     f_INT->SetParameter(11, Dterm);
     return f_INT->Eval(a_phi, a_th);
 }

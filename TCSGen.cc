@@ -454,7 +454,7 @@ int main(int argc, char **argv)
             psf = psf_t * psf_Q2 * psf_phi_lab * psf_cos_th * psf_phi_cm * psf_Eg;
 
             // crs_lmlp.Set_SQ2t(s, Q2, t);
-            crs_BH = target->c_sec(s, Q2, t, -1, (phi_cm * TMath::RadToDeg()), (acos(cos_th) * TMath::RadToDeg())); // -1: cros section is not weighted by L/L0
+            crs_BH = target->c_sec(s, Q2, t, -1, (phi_cm * TMath::RadToDeg()), (acos(cos_th) * TMath::RadToDeg()),1.); // -1: cros section is not weighted by L/L0
 
             if (isnan(crs_BH))
                 continue;
