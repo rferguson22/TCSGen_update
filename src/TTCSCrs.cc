@@ -58,7 +58,9 @@ double TTCSCrs::BH_crs_section(double *x, double *par) {
 
     double F1p1 = par[3];
     double F2p1 = par[4];
-    double m_tar = par[5];
+    double m_tar1 = par[5];
+
+    double m_tar=M_p;
     	
     //std::cout<<F1p<<"\t"<<F2p<<"\t"<<std::endl;
  	
@@ -70,7 +72,9 @@ double TTCSCrs::BH_crs_section(double *x, double *par) {
     double r = sqrt((s - Q2 - m_tar * m_tar)*(s - Q2 - m_tar * m_tar) - 4 * Q2 * m_tar * m_tar);
     double tau = Q2 / (s - m_tar * m_tar);
     double cos_TH_Cm = (2 * s * (t - 2 * m_tar * m_tar) + (s + m_tar * m_tar)*(s + m_tar * m_tar - Q2)) / sqrt(Lambda(s, m_tar*m_tar, 0) * Lambda(s, m_tar*m_tar, Q2));
+    double cos_TH_Cm1 = (2 * s * (t - 2 * M_p * M_p) + (s + M_p * M_p)*(s + M_p * M_p - Q2)) / sqrt(Lambda(s, M_p*M_p, 0) * Lambda(s, M_p*M_p, Q2));
     double sin_TH_Cm = sqrt(1 - cos_TH_Cm * cos_TH_Cm);
+    double sin_TH_Cm1 = sqrt(1 - cos_TH_Cm1*cos_TH_Cm1);
     double Delta_Perp = sin_TH_Cm * r / (2 * sqrt(s));
     //iDelta_Perp = Delta_Perp;
     //double Delta_Perp = sqrt((-t)*(1 - tau) - tau*tau*M_p*M_p );
@@ -96,6 +100,8 @@ double TTCSCrs::BH_crs_section(double *x, double *par) {
     } else {
         weight = 1.;
     }
+ 
+    std::cout<<sin_TH_Cm<<"\t"<<sin_TH_Cm1<<std::endl;
 
     /*With (sin(theta)) it returns dsigma/dTheta, without it is dSigma/dCos(Theta) */ 
     double crs = /*(sin(theta))* */ 1./(2*PI)*weight *(TMath::Power(alpha_em, 3) / (4 * PI * (s - m_tar * m_tar)*(s - m_tar* m_tar)))*(beta / (-t * L_BH))*
