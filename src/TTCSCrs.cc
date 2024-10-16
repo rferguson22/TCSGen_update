@@ -20,7 +20,7 @@ TTCSCrs::TTCSCrs() {
     if (gSystem->AccessPathName(dat))
         dat=gSystem->Getenv("TCSGEN_DIR")+TString("/")+dat;
     
-    f_BH = new TF2("f_BH", BH_crs_section, 0, 360, 0, 180, 4);
+    f_BH = new TF2("f_BH", BH_crs_section, 0, 360, 0, 180, 6);
     f_INT = new TF2("f_INT", INT_crs_section, 0., 360., 0., 180., 12);
     gp = new GPDs(dat, 17, 17, 9, 1.49, -0.20, 0.072);
 }
@@ -56,10 +56,12 @@ double TTCSCrs::BH_crs_section(double *x, double *par) {
     double Q2 = par[1];
     double t = par[2];
 
-    double F1p = par[4];
-    double F2p = par[5];
-    double m_tar = par[6];
-
+    double F1p1 = par[3];
+    double F2p1 = par[4];
+    double m_tar = par[5];
+    	
+    //std::cout<<F1p<<"\t"<<F2p<<"\t"<<std::endl;
+ 	
     //cout<<" s Q2 t phi, theta ="<<s<<"  "<<Q2<<"  "<<t<<"  "<<phi<<"  "<<theta<<endl;
 
     double weight;
@@ -84,8 +86,10 @@ double TTCSCrs::BH_crs_section(double *x, double *par) {
 
     double B_BH = (Q2 + t)*(Q2 + t) + b * b + 8 * m_e * m_e * Q2 - 4 * m_e * m_e * (t + 2 * m_e * m_e)*(Q2 - t)*(Q2 - t) / L_BH;
 
-    //double F1p = (1. / ((1 - t / 0.71)*(1 - t / 0.71)))*(1 / (1 - t / (4. * M_p * M_p)))*(1 - 2.79 * t / (4 * M_p * M_p));
-    //double F2p = (1. / ((1 - t / 0.71)*(1 - t / 0.71)))*(1 / (1 - t / (4. * M_p * M_p)))*(ammp - 1);
+    double F1p = (1. / ((1 - t / 0.71)*(1 - t / 0.71)))*(1 / (1 - t / (4. * M_p * M_p)))*(1 - 2.79 * t / (4 * M_p * M_p));
+    double F2p = (1. / ((1 - t / 0.71)*(1 - t / 0.71)))*(1 / (1 - t / (4. * M_p * M_p)))*(ammp - 1);
+
+    //std::cout<<F1p_old<<"\t"<<F2p_old<<std::endl;
 
     if (par[3] == 1) {
         weight = L_BH / L0_BH;
@@ -176,7 +180,7 @@ double TTCSCrs::Eval_BH(double a_phi, double a_th) const {
 }
 
 double TTCSCrs::Eval_BH(double a_s, double a_Q2, double a_t, double a_weight, double a_phi, double a_th, double f1p, double f2p, double m_tar) const {
-
+   // std::cout<<a_s<<"\t"<<a_Q2<<"\t"<<a_t<<"\t"<<f1p<<"\t"<<f2p<<"\t"<<m_tar<<std::endl;
     f_BH->SetParameters(a_s, a_Q2, a_t,f1p,f2p,m_tar);
     return f_BH->Eval(a_phi, a_th);
 

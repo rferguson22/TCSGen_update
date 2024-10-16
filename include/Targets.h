@@ -9,7 +9,7 @@
 class p_tar : public cross_section {
 public:
 	p_tar(){
-		mass = 0.9383;
+		mass =0.938272;
 		PID = 2212;
 		mag_mom = 2.793;
 	}

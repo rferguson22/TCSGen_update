@@ -25,6 +25,10 @@
 #include "CrossSecFormulae.h"
 #include <string>
 
+#include <TCanvas.h>
+#include <TH1D.h>
+#include <TLegend.h>
+
 #include <cstdlib>
 #include <iostream>
 #include <algorithm>
@@ -190,10 +194,9 @@ int main(int argc, char **argv)
         return 0;
     }
     
-    cross_target target_creator;
-    shared_ptr<cross_section> target=target_creator.create_target(c_sec_input,model_input);
-
-
+    std::shared_ptr<cross_section> model=create_model(model_input);
+    std::shared_ptr<cross_section> target = create_target(c_sec_input,model);
+     
     cout << "Nsim = " << Nsim << endl;
     cout << "Eb = " << Eb << endl;
     cout << "t_lim = " << t_lim << endl;
@@ -338,6 +341,9 @@ int main(int argc, char **argv)
     /////////////Set Rad Corr Parameters//////////////
     RadiativeCorrections Rad_corr_1(rad_cut_off_min);
     /////////////////////////////////////////////////
+    
+
+    TH1D *h_crs = new TH1D("h_crs","Cross Section Distribution",100,0.,1000);
 
     for (int i = 0; i < Nsim; i++)
     {
@@ -455,6 +461,9 @@ int main(int argc, char **argv)
 
             // crs_lmlp.Set_SQ2t(s, Q2, t);
             crs = target->c_sec(s, Q2, t, -1, (phi_cm * TMath::RadToDeg()), (acos(cos_th) * TMath::RadToDeg()),2.); // -1: cros section is not weighted by L/L0
+	    h_crs->Fill(crs);
+
+	    cout<<crs<<endl;
 
             double vz = rand.Uniform(vz_min, vz_max);
 
@@ -515,6 +524,15 @@ int main(int argc, char **argv)
             cout << " t_min =  " << t_min << "   t_lim = " << t_lim << "  Eg = " << Eg << endl;
         }
     }
+    
+    TCanvas *c1 = new TCanvas("c1","Cross Section",800,600);
+    h_crs->GetXaxis()->SetTitle("Cross Section");
+    h_crs->GetYaxis()->SetTitle("Counts");
+    h_crs->Draw();
+
+    c1->SaveAs("cross_section.png");
+    c1->Update();
+
 
     if (write_root)
     {
