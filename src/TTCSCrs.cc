@@ -20,7 +20,7 @@ TTCSCrs::TTCSCrs() {
     if (gSystem->AccessPathName(dat))
         dat=gSystem->Getenv("TCSGEN_DIR")+TString("/")+dat;
     
-    f_BH = new TF2("f_BH", BH_crs_section, 0, 360, 0, 180, 6);
+    f_BH = new TF2("f_BH", BH_crs_section, 0, 360, 0, 180, 7);
     f_INT = new TF2("f_INT", INT_crs_section, 0., 360., 0., 180., 12);
     gp = new GPDs(dat, 17, 17, 9, 1.49, -0.20, 0.072);
 }
@@ -33,7 +33,7 @@ TTCSCrs::TTCSCrs(double a_s, double a_Q2, double a_t) {
 
     Set_SQ2t(a_s, a_Q2, a_t);
     iweight = -1;
-    f_BH = new TF2("f_BH", BH_crs_section, 0, 360, 0, 180, 4);
+    f_BH = new TF2("f_BH", BH_crs_section, 0, 360, 0, 180, 7);
     f_BH->SetParameters(is, iQ2, it);
 
     f_INT = new TF2("f_INT", INT_crs_section, 0., 360., 0., 180., 12);
@@ -55,33 +55,27 @@ double TTCSCrs::BH_crs_section(double *x, double *par) {
     double s = par[0];
     double Q2 = par[1];
     double t = par[2];
+    double a1= par[3];
+    double m_tar =par[4];
+    double F1p = par[5];
+    double F2p = par[6];
 
-    double F1p1 = par[3];
-    double F2p1 = par[4];
-    double m_tar1 = par[5];
-
-    double m_tar=M_p;
-    	
-    //std::cout<<F1p<<"\t"<<F2p<<"\t"<<std::endl;
- 	
     //cout<<" s Q2 t phi, theta ="<<s<<"  "<<Q2<<"  "<<t<<"  "<<phi<<"  "<<theta<<endl;
 
     double weight;
 
     double beta = sqrt(1 - (4 * m_e * m_e) / Q2);
-    double r = sqrt((s - Q2 - m_tar * m_tar)*(s - Q2 - m_tar * m_tar) - 4 * Q2 * m_tar * m_tar);
-    double tau = Q2 / (s - m_tar * m_tar);
+    double r = sqrt((s - Q2 - m_tar *m_tar)*(s - Q2 - m_tar * m_tar) - 4 * Q2 * m_tar * m_tar);
+    double tau = Q2 / (s -m_tar * m_tar);
     double cos_TH_Cm = (2 * s * (t - 2 * m_tar * m_tar) + (s + m_tar * m_tar)*(s + m_tar * m_tar - Q2)) / sqrt(Lambda(s, m_tar*m_tar, 0) * Lambda(s, m_tar*m_tar, Q2));
-    double cos_TH_Cm1 = (2 * s * (t - 2 * M_p * M_p) + (s + M_p * M_p)*(s + M_p * M_p - Q2)) / sqrt(Lambda(s, M_p*M_p, 0) * Lambda(s, M_p*M_p, Q2));
     double sin_TH_Cm = sqrt(1 - cos_TH_Cm * cos_TH_Cm);
-    double sin_TH_Cm1 = sqrt(1 - cos_TH_Cm1*cos_TH_Cm1);
     double Delta_Perp = sin_TH_Cm * r / (2 * sqrt(s));
     //iDelta_Perp = Delta_Perp;
     //double Delta_Perp = sqrt((-t)*(1 - tau) - tau*tau*M_p*M_p );
     double a = beta * r * cos(theta);
 
-    double b = beta * ((Q2 * (s - m_tar * m_tar - Q2) + t * (s - m_tar * m_tar + Q2)) / r) * cos(theta) -
-            beta * ((2 * (s - m_tar * m_tar) * sqrt(Q2) * Delta_Perp) / r) * sin(theta) * cos(phi);
+    double b = beta * ((Q2 * (s - m_tar *m_tar - Q2) + t * (s - m_tar * m_tar + Q2)) / r) * cos(theta) -
+            beta * ((2 * (s -m_tar * m_tar) * sqrt(Q2) * Delta_Perp) / r) * sin(theta) * cos(phi);
 
     double L_BH = ((Q2 - t)*(Q2 - t) - b * b) / 4.;
     double L0_BH = Q2 * Q2 * sin(theta) * sin(theta) / 4.;
@@ -90,24 +84,21 @@ double TTCSCrs::BH_crs_section(double *x, double *par) {
 
     double B_BH = (Q2 + t)*(Q2 + t) + b * b + 8 * m_e * m_e * Q2 - 4 * m_e * m_e * (t + 2 * m_e * m_e)*(Q2 - t)*(Q2 - t) / L_BH;
 
-    double F1p = (1. / ((1 - t / 0.71)*(1 - t / 0.71)))*(1 / (1 - t / (4. * M_p * M_p)))*(1 - 2.79 * t / (4 * M_p * M_p));
-    double F2p = (1. / ((1 - t / 0.71)*(1 - t / 0.71)))*(1 / (1 - t / (4. * M_p * M_p)))*(ammp - 1);
-
-    //std::cout<<F1p_old<<"\t"<<F2p_old<<std::endl;
+   // double F1p = (1. / ((1 - t / 0.71)*(1 - t / 0.71)))*(1 / (1 - t / (4. * m_tar * m_tar)))*(1 - 2.79 * t / (4 * m_tar * m_tar));
+   // double F2p = (1. / ((1 - t / 0.71)*(1 - t / 0.71)))*(1 / (1 - t / (4. * m_tar * m_tar)))*(ammp - 1);
 
     if (par[3] == 1) {
         weight = L_BH / L0_BH;
     } else {
         weight = 1.;
     }
- 
-    std::cout<<sin_TH_Cm<<"\t"<<sin_TH_Cm1<<std::endl;
 
     /*With (sin(theta)) it returns dsigma/dTheta, without it is dSigma/dCos(Theta) */ 
-    double crs = /*(sin(theta))* */ 1./(2*PI)*weight *(TMath::Power(alpha_em, 3) / (4 * PI * (s - m_tar * m_tar)*(s - m_tar* m_tar)))*(beta / (-t * L_BH))*
+    double crs = /*(sin(theta))* */ 1./(2*PI)*weight *(TMath::Power(alpha_em, 3) / (4 * PI * (s - m_tar * m_tar)*(s - m_tar * m_tar)))*(beta / (-t * L_BH))*
             ((A_BH / (-t))*(F1p * F1p - (t / (4 * m_tar * m_tar)) * F2p * F2p) + (F1p + F2p)*(F1p + F2p) * B_BH / 2)*
             0.389379 * 1e9;
-
+   
+    std::cout<<crs<<std::endl;
     return crs;
 
 }
@@ -130,38 +121,33 @@ double TTCSCrs::INT_crs_section(double *x, double *par) {
     double ReE = par[8];
     double ImHtild = par[9];
     double ReHtild = par[10];
-       
-    double F1p = par[11];
-    double F2p = par[12];
-    double M_tar = par[13];
+    double Dterm = par[11];
 
-    double Dterm = par[14];
- 
     double sigma = 1.;
 
     double beta = sqrt(1 - (4 * m_e * m_e) / Q2);
-    double r = sqrt((s - Q2 - M_tar * M_tar)*(s - Q2 - M_tar * M_tar) - 4 * Q2 * M_tar * M_tar);
-    double tau = Q2 / (s - M_tar * M_tar);
+    double r = sqrt((s - Q2 - M_p * M_p)*(s - Q2 - M_p * M_p) - 4 * Q2 * M_p * M_p);
+    double tau = Q2 / (s - M_p * M_p);
     double eta = tau / (2 - tau);
-    double cos_TH_Cm = (2 * s * (t - 2 * M_tar * M_tar) + (s + M_tar * M_tar)*(s + M_tar * M_tar - Q2)) / sqrt(Lambda(s, M_tar*M_tar, 0) * Lambda(s, M_tar*M_tar, Q2));
+    double cos_TH_Cm = (2 * s * (t - 2 * M_p * M_p) + (s + M_p * M_p)*(s + M_p * M_p - Q2)) / sqrt(Lambda(s, M_p*M_p, 0) * Lambda(s, M_p*M_p, Q2));
     double sin_TH_Cm = sqrt(1 - cos_TH_Cm * cos_TH_Cm);
     double Delta_Perp = sin_TH_Cm * r / (2 * sqrt(s));
     //double Delta_Perp = sqrt((-t)*(1 - tau) - tau*tau*M_p*M_p );
     double a = beta * r * cos(theta);
-    double b = sigma * beta * sqrt((Q2 - t)*(Q2 - t) - TMath::Power((2 * (s - M_tar * M_tar) * sqrt(Q2) * Delta_Perp) / r, 2)) * cos(theta) -
-            beta * ((2 * (s - M_tar * M_tar) * sqrt(Q2) * Delta_Perp) / r) * sin(theta) * cos(phi);
+    double b = sigma * beta * sqrt((Q2 - t)*(Q2 - t) - TMath::Power((2 * (s - M_p * M_p) * sqrt(Q2) * Delta_Perp) / r, 2)) * cos(theta) -
+            beta * ((2 * (s - M_p * M_p) * sqrt(Q2) * Delta_Perp) / r) * sin(theta) * cos(phi);
     double L_BH = ((Q2 - t)*(Q2 - t) - b * b) / 4.;
     double L0_BH = Q2 * Q2 * sin(theta) * sin(theta) / 4.;
 
-    //double F1p = (1. / ((1 - t / 0.71)*(1 - t / 0.71)))*(1 / (1 - t / (4. * M_p * M_p)))*(1 - 2.79 * t / (4 * M_p * M_p));
-    //double F2p = (1. / ((1 - t / 0.71)*(1 - t / 0.71)))*(1 / (1 - t / (4. * M_p * M_p)))*(ammp - 1);
+    double F1p = (1. / ((1 - t / 0.71)*(1 - t / 0.71)))*(1 / (1 - t / (4. * M_p * M_p)))*(1 - 2.79 * t / (4 * M_p * M_p));
+    double F2p = (1. / ((1 - t / 0.71)*(1 - t / 0.71)))*(1 / (1 - t / (4. * M_p * M_p)))*(ammp - 1);
     //double F1n = (1./((1 - t/0.71)*(1 - t/0.71)))*(1/(1 - t/(4.*M_p*M_p) ))*(-ammn*t/(4*M_p*M_p));
     //double F2n = (1./((1 - t/0.71)*(1 - t/0.71)))*(1/(1 - t/(4.*M_p*M_p) ))*ammn;
 
-    double t_min = -4 * eta * eta * M_tar * M_tar / (1 - eta * eta);
+    double t_min = -4 * eta * eta * M_p * M_p / (1 - eta * eta);
 
-    double M2_int = 2 * sqrt(t_min - t) / M_tar * (1 - eta) / (1 + eta)*(F1p * (ReH + sc_D * Dterm) - eta * (F1p + F2p) * ReHtild -
-            (t / (4 * M_tar * M_tar)) * F2p * (ReE - sc_D * Dterm));
+    double M2_int = 2 * sqrt(t_min - t) / M_p * (1 - eta) / (1 + eta)*(F1p * (ReH + sc_D * Dterm) - eta * (F1p + F2p) * ReHtild -
+            (t / (4 * M_p * M_p)) * F2p * (ReE - sc_D * Dterm));
 
     if (par[4] == 1) {
         weight = L_BH / L0_BH;
@@ -185,9 +171,13 @@ double TTCSCrs::Eval_BH(double a_phi, double a_th) const {
     return f_BH->Eval(a_phi, a_th);
 }
 
-double TTCSCrs::Eval_BH(double a_s, double a_Q2, double a_t, double a_weight, double a_phi, double a_th, double f1p, double f2p, double m_tar) const {
-   // std::cout<<a_s<<"\t"<<a_Q2<<"\t"<<a_t<<"\t"<<f1p<<"\t"<<f2p<<"\t"<<m_tar<<std::endl;
-    f_BH->SetParameters(a_s, a_Q2, a_t,f1p,f2p,m_tar);
+double TTCSCrs::Eval_BH(double a_s, double a_Q2, double a_t, double a_weight, double a_phi, double a_th,double f1p,double f2p, double m) const {
+    double m_tar=M_p;
+    double t=a_t;
+    double F1p = (1. / ((1 - t / 0.71)*(1 - t / 0.71)))*(1 / (1 - t / (4. * m_tar * m_tar)))*(1 - 2.79 * t / (4 * m_tar * m_tar));
+    double F2p = (1. / ((1 - t / 0.71)*(1 - t / 0.71)))*(1 / (1 - t / (4. * m_tar * m_tar)))*(ammp - 1);
+
+    f_BH->SetParameters(a_s, a_Q2, a_t, a_weight,m_tar,F1p,F2p);
     return f_BH->Eval(a_phi, a_th);
 
 }
@@ -210,7 +200,7 @@ double TTCSCrs::Eval_INT(double a_phi, double a_th, double a_sc_D) const {
     return f_INT->Eval(a_phi, a_th);
 }
 
-double TTCSCrs::Eval_INT(double a_s, double a_Q2, double a_t, double a_weight, double a_phi, double a_th, double a_sc_D,double f1p,double f2p, double m_tar) const {
+double TTCSCrs::Eval_INT(double a_s, double a_Q2, double a_t, double a_weight, double a_phi, double a_th, double a_sc_D,double f1p,double f2p,double m) const {
     double eta = a_Q2 / (2 * (a_s - M_p * M_p) - a_Q2);
     gp->Set_q2_t_eta(a_Q2, a_t, eta);
 
@@ -224,7 +214,6 @@ double TTCSCrs::Eval_INT(double a_s, double a_Q2, double a_t, double a_weight, d
     //  cout<<"ImH   ReH  ImE  ReE  ImHtild ReHtild Dterm  "<<ImH<<"   "<<ReH<<"   "<<ImE<<"   "<<ReE<<"   "<<ImHtild<<"   "<<ReHtild<<"   "<<Dterm<<endl;
 
     f_INT->SetParameters(a_s, a_Q2, a_t, a_sc_D, a_weight, ImH, ReH, ImE, ReE, ImHtild, ReHtild);
-    f_INT->SetParameters(f1p,f2p,m_tar);
     f_INT->SetParameter(11, Dterm);
     return f_INT->Eval(a_phi, a_th);
 }
