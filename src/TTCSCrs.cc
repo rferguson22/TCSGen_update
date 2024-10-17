@@ -171,7 +171,7 @@ double TTCSCrs::Eval_BH(double a_phi, double a_th) const {
     return f_BH->Eval(a_phi, a_th);
 }
 
-double TTCSCrs::Eval_BH(double a_s, double a_Q2, double a_t, double a_weight, double a_phi, double a_th) const {
+double TTCSCrs::Eval_BH(double a_s, double a_Q2, double a_t, double a_weight, double a_phi, double a_th,double temp) const {
     double m_tar=M_p;
     double t=a_t;
     double F1p = (1. / ((1 - t / 0.71)*(1 - t / 0.71)))*(1 / (1 - t / (4. * m_tar * m_tar)))*(1 - 2.79 * t / (4 * m_tar * m_tar));
