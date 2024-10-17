@@ -1,8 +1,7 @@
-Nsim     100000
-NPerFile 1000
+Nsim     10000
 Eb       10.6
 tLim     -1.8
-EgMin    2
+EgMin    4
 EgMax    10.6
 vzMax    2.5
 vzMin    -2.5
@@ -10,8 +9,3 @@ MinvMin  2
 Q2Cut    0.02
 LUND     0
 Seed     0
-vzMin	 -5.5
-vzMax	 -0.5
-RAD_CORR 1
-rad_cut_off_min 0.005
-rad_cut_off_max 0.9
