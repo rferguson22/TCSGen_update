@@ -16,7 +16,8 @@ public:
 		double f1p = target->f1(a_t);
 		double f2p = target->f2(a_t);
 		double m = target->mass;	
-		return ttcscrs.Eval_BH(a_s,a_Q2,a_t,a_weight,a_phi,a_th,f1p,f2p,m);
+		//return ttcscrs.Eval_BH(a_s,a_Q2,a_t,a_weight,a_phi,a_th,f1p,f2p,m);
+		return 0;
 	}
 
 	std::string get_type() const override{
@@ -35,7 +36,8 @@ public:
                 double f2p = target->f2(a_t);
                 double m = target->mass;
 
-                return ttcscrs.Eval_INT(a_s,a_Q2,a_t,a_weight,a_phi,a_th,a_sc_D,f1p,f2p,m);
+                //return ttcscrs.Eval_INT(a_s,a_Q2,a_t,a_weight,a_phi,a_th,a_sc_D,f1p,f2p,m);
+                return 0;
         }
 
 	std::string get_type() const override{

@@ -93,8 +93,7 @@ double TTCSCrs::BH_crs_section(double *x, double *par) {
     double crs = /*(sin(theta))* */ 1./(2*PI)*weight *(TMath::Power(alpha_em, 3) / (4 * PI * (s - M_p * M_p)*(s - M_p * M_p)))*(beta / (-t * L_BH))*
             ((A_BH / (-t))*(F1p * F1p - (t / (4 * M_p * M_p)) * F2p * F2p) + (F1p + F2p)*(F1p + F2p) * B_BH / 2)*
             0.389379 * 1e9;
-    
-    std::cout<<crs<<std::endl;
+
     return crs;
 
 }
@@ -167,7 +166,7 @@ double TTCSCrs::Eval_BH(double a_phi, double a_th) const {
     return f_BH->Eval(a_phi, a_th);
 }
 
-double TTCSCrs::Eval_BH(double a_s, double a_Q2, double a_t, double a_weight, double a_phi, double a_th,double f1p,double f2p,double m) const {
+double TTCSCrs::Eval_BH(double a_s, double a_Q2, double a_t, double a_weight, double a_phi, double a_th) const {
 
     f_BH->SetParameters(a_s, a_Q2, a_t, a_weight);
     return f_BH->Eval(a_phi, a_th);
@@ -192,7 +191,7 @@ double TTCSCrs::Eval_INT(double a_phi, double a_th, double a_sc_D) const {
     return f_INT->Eval(a_phi, a_th);
 }
 
-double TTCSCrs::Eval_INT(double a_s, double a_Q2, double a_t, double a_weight, double a_phi, double a_th, double a_sc_D,double f1p,double f2p,double m) const {
+double TTCSCrs::Eval_INT(double a_s, double a_Q2, double a_t, double a_weight, double a_phi, double a_th, double a_sc_D) const {
     double eta = a_Q2 / (2 * (a_s - M_p * M_p) - a_Q2);
     gp->Set_q2_t_eta(a_Q2, a_t, eta);
 
