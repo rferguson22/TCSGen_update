@@ -19,9 +19,9 @@ public:
     /*TTCSCrs(const TTCSCrs& orig);*/
 
     double Eval_BH(double, double) const; // phi and theta in radians
-    double Eval_BH(double, double, double, double, double, double) const; // s, Q2, t, weight, phi, theta
+    double Eval_BH(double, double, double, double, double, double, double,double,double) const; // s, Q2, t, weight, phi, theta
     double Eval_INT(double, double, double) const; // (phi, theta, scale of Dterm) phi and theta in radians
-    double Eval_INT(double, double, double, double, double, double, double) const; // s, Q2, t, weight, phi, theta, sc_D
+    double Eval_INT(double, double, double, double, double, double, double,double,double,double) const; // s, Q2, t, weight, phi, theta, sc_D
 
     void Set_SQ2t(double, double, double);
     double Integral_BH_phi_th(double phi_min = 0, double phi_max = 360, double th_min = 0, double th_max = 180);

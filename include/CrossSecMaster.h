@@ -23,6 +23,10 @@ public:
         virtual double f1(double t){return 0;};
         virtual double f2(double t){return 0;};
 	virtual std::string get_type() const=0;
+
+	virtual int get_PID() const {return PID;};
+        virtual double get_mass() const {return mass;};
+        virtual double get_mag_mom() const {return mag_mom;};
 };
 	
 

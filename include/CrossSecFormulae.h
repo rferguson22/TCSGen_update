@@ -15,14 +15,15 @@ public:
 	double c_sec(double a_s, double a_Q2, double a_t, double a_weight, double a_phi, double a_th,double a_sc_D){
 		double f1p = target->f1(a_t);
 		double f2p = target->f2(a_t);
-		double m = target->mass;	
-		//return ttcscrs.Eval_BH(a_s,a_Q2,a_t,a_weight,a_phi,a_th,f1p,f2p,m);
-		return 0;
+		double m = target->get_mass();	
+		return ttcscrs.Eval_BH(a_s,a_Q2,a_t,a_weight,a_phi,a_th,f1p,f2p,m);
 	}
 
-	std::string get_type() const override{
-		return "BH";
-	}
+	std::string get_type() const override{return "BH";};
+
+	double get_mass() const override{return target->get_mass();};
+	int get_PID() const override{return target->get_PID();};
+	double get_mag_mom() const override{return target->get_mag_mom();};
 };
 
 class INT : public cross_section {
@@ -34,15 +35,17 @@ public:
         double c_sec(double a_s, double a_Q2, double a_t, double a_weight, double a_phi, double a_th,double a_sc_D){
                 double f1p = target->f1(a_t);
                 double f2p = target->f2(a_t);
-                double m = target->mass;
+                double m = target->get_mass();
 
-                //return ttcscrs.Eval_INT(a_s,a_Q2,a_t,a_weight,a_phi,a_th,a_sc_D,f1p,f2p,m);
-                return 0;
+                return ttcscrs.Eval_INT(a_s,a_Q2,a_t,a_weight,a_phi,a_th,a_sc_D,f1p,f2p,m);
         }
 
-	std::string get_type() const override{
-		return "INT";
-	}
+	std::string get_type() const override{return "INT";};
+
+	double get_mass() const override{return target->get_mass();};
+        int get_PID() const override{return target->get_PID();};
+        double get_mag_mom() const override{return target->get_mag_mom();};
+
 };
 
 
@@ -56,7 +59,7 @@ std::shared_ptr<cross_section> create_target(const std::string& c_sec_type, std:
 	else {
 		return nullptr;
 	}
-}
+};
 
 
 
