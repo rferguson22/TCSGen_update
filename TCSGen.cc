@@ -25,10 +25,6 @@
 #include "CrossSecFormulae.h"
 #include <string>
 
-#include <TCanvas.h>
-#include <TH1D.h>
-#include <TLegend.h>
-
 #include <cstdlib>
 #include <iostream>
 #include <algorithm>
@@ -84,9 +80,6 @@ int main(int argc, char **argv)
     bool Rad_corr;
     double rad_cut_off_min;
     double rad_cut_off_max;
-    string target_input;
-    string model_input;
-    string c_sec_input;
 
     for (map<std::string, std::string>::iterator it = m_Settings.begin(); it != m_Settings.end(); it++)
     {
@@ -142,18 +135,6 @@ int main(int argc, char **argv)
         {
             vz_min = atof(val.c_str());
         }
-   	else if (key.compare("Target") == 0)
-	{
-	    target_input = val;
-	}
-	else if (key.compare("Model") == 0)
-	{
-	    model_input = val;
-	}
-  	else if (key.compare("CrsSec") == 0)
-	{
-   	    c_sec_input = val;
-      	}
         else if (key.compare("RAD_CORR") == 0)
         {
             Rad_corr = atof(val.c_str());
@@ -164,16 +145,13 @@ int main(int argc, char **argv)
         }
     }
 
-    cout<<target_input<<endl;
-    cout<<model_input<<endl;
-    cout<<c_sec_input<<endl; 
     cout << "Valid targets are: ";
     for (const string& name : valid_targets){
 	cout << name << " ";
     }
     cout << endl;
 
-   // string target_input;
+    string target_input;
     cout << "Enter the target type: ";
     cin  >> target_input;
 
@@ -191,7 +169,7 @@ int main(int argc, char **argv)
     } 
     cout<<endl;
 
-    //string model_input;
+    string model_input;
     cout<<"Enter the model: ";
     cin>>model_input;
     
@@ -202,7 +180,7 @@ int main(int argc, char **argv)
     }
     cout<<endl;
 
-    //string c_sec_input;
+    string c_sec_input;
     cout<<"Enter the cross section type: ";
     cin>>c_sec_input;
 
