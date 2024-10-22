@@ -164,49 +164,29 @@ int main(int argc, char **argv)
         }
     }
 
-    cout<<target_input<<endl;
-    cout<<model_input<<endl;
-    cout<<c_sec_input<<endl; 
-    cout << "Valid targets are: ";
-    for (const string& name : valid_targets){
-	cout << name << " ";
-    }
-    cout << endl;
-
-   // string target_input;
-    cout << "Enter the target type: ";
-    cin  >> target_input;
 
     if (target_models.find(target_input)==target_models.end()){
 	cout << "Invalid target type." << endl;
 	return 0;
     }
 
-    cout << "Valid models for "<< target_input<<" are: ";
-
-
     const auto& models = target_models[target_input];
+    bool valid_model=false;
     for (const auto& model : models){
-	cout<<model->get_type()<<" ";
-    } 
-    cout<<endl;
-
-    //string model_input;
-    cout<<"Enter the model: ";
-    cin>>model_input;
-    
-    cout<<"Valid cross section types are: ";
-    vector<string> valid_c_sec = get_valid_cross_sec();
-    for (const string& name: valid_c_sec){
-	cout<<name<<" ";
+	if (model->get_type() == model_input){
+		valid_model=true;
+		break;
+	}
     }
-    cout<<endl;
 
-    //string c_sec_input;
-    cout<<"Enter the cross section type: ";
-    cin>>c_sec_input;
+    if (!valid_model){
+	cout<<"Invalid model for target "<<target_input<<endl;
+	return 0;
+    }
 
-    if(find(valid_c_sec.begin(),valid_c_sec.end(),c_sec_input)==valid_c_sec.end()){
+
+    vector<string> valid_c_sec = get_valid_cross_sec();
+    if (find(valid_c_sec.begin(),valid_c_sec.end(),c_sec_input)==valid_c_sec.end()){
         cout << "Invalid cross section type." << endl;
         return 0;
     }
@@ -228,7 +208,9 @@ int main(int argc, char **argv)
     cout << "IsLund = " << isLund << endl;
     cout << "Rad_corr = " << Rad_corr << endl;
     cout << "rad_cut_off_min = " << rad_cut_off_min << endl;
-
+    cout << "Target = "<<target_input<<endl;
+    cout << "Model = "<<model_input<<endl;
+    cout << "CrsSec = "<<c_sec_input<<endl;
 
     cout << "**************************************************" << endl;
     cout << "*******"

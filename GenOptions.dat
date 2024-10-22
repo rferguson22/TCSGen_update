@@ -9,6 +9,6 @@ MinvMin  2
 Q2Cut    0.02
 LUND     0
 Seed     0
-Target   default
-Model    default
-CrsSec   default
+Target   p_tar
+Model    model_proton
+CrsSec   BH
