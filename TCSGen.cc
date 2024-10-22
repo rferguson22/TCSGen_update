@@ -220,7 +220,9 @@ int main(int argc, char **argv)
     cout << "IsLund = " << isLund << endl;
     cout << "Rad_corr = " << Rad_corr << endl;
     cout << "rad_cut_off_min = " << rad_cut_off_min << endl;
-
+    cout << "Target = "<<target_input<<endl;
+    cout << "Model = "<<model_input<<endl;
+    cout << "CrsSec = "<<c_sec_input<<endl;
 
     cout << "**************************************************" << endl;
     cout << "*******"
