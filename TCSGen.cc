@@ -172,7 +172,21 @@ int main(int argc, char **argv)
     string model_input;
     cout<<"Enter the model: ";
     cin>>model_input;
-    
+
+    bool valid_model=false;
+    for (const auto& model : models){
+	if (model->get_type() == model_input){
+		valid_model=true;
+   		break;
+	}
+    }
+
+    if (!valid_model){
+	cout<<"Invalid model for target "<<target_input<<endl;
+	return 0;
+    }
+
+
     cout<<"Valid cross section types are: ";
     vector<string> valid_c_sec = get_valid_cross_sec();
     for (const string& name: valid_c_sec){
