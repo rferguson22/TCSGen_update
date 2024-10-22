@@ -31,6 +31,11 @@ public:
                 PID = 2112;
                 mag_mom = -1.913;
         }
+
+	double get_mass() const override {return mass;};
+	int get_PID() const override {return PID;};
+	double get_mag_mom() const override {return mag_mom;};
+
 };
 
 std::vector<std::string> valid_targets = {"p_tar","n_tar"};
