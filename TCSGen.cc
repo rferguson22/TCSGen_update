@@ -268,10 +268,10 @@ int main(int argc, char **argv)
     double Eg, Minv, t, Q2, s, eta;
     double psf, crs_BH, crs_INT, crs_int,crs;
     double psf_flux, flux_factor;
-    TLorentzVector L_em, L_ep, L_prot, L_rad_1, L_rad_2;
+    TLorentzVector L_em, L_ep, L_tar, L_rad_1, L_rad_2;
     TLorentzVector L_gprime;
 
-    double px_prot, py_prot, pz_prot, E_prot;
+    double px_tar, py_tar, pz_tar, E_tar;
     double px_ep, py_ep, pz_ep, E_ep;
     double px_em, py_em, pz_em, E_em;
     double px_rad_em, py_rad_em, pz_rad_em, E_rad_em;
@@ -284,7 +284,7 @@ int main(int argc, char **argv)
     TTree *tr1 = new TTree("tr1", "TCS MC events");
     tr1->Branch("L_em", "TLorentzVector", &L_em, 3200, 99);
     tr1->Branch("L_ep", "TLorentzVector", &L_ep, 3200, 99);
-    tr1->Branch("L_prot", "TLorentzVector", &L_prot, 3200, 99);
+    tr1->Branch("L_tar", "TLorentzVector", &L_tar, 3200, 99);
     tr1->Branch("Eg", &Eg, "Eg/D");
     tr1->Branch("Q2", &Q2, "Q2/D");
     tr1->Branch("t", &t, "t/D");
@@ -295,10 +295,10 @@ int main(int argc, char **argv)
     tr1->Branch("crs_BH", &crs_BH, "crs_BH/D");
     tr1->Branch("crs_INT", &crs_INT, "crs_INT/D");
 
-    tr1->Branch("px_prot", &px_prot, "px_prot/D");
-    tr1->Branch("py_prot", &py_prot, "py_prot/D");
-    tr1->Branch("pz_prot", &pz_prot, "pz_prot/D");
-    tr1->Branch("E_prot", &E_prot, "E_prot/D");
+    tr1->Branch("px_tar", &px_tar, "px_tar/D");
+    tr1->Branch("py_tar", &py_tar, "py_tar/D");
+    tr1->Branch("pz_tar", &pz_tar, "pz_tar/D");
+    tr1->Branch("E_tar", &E_tar, "E_tar/D");
     tr1->Branch("px_ep", &px_ep, "px_ep/D");
     tr1->Branch("py_ep", &py_ep, "py_ep/D");
     tr1->Branch("pz_ep", &pz_ep, "pz_ep/D");
@@ -386,25 +386,22 @@ int main(int argc, char **argv)
             double phi_cm = rand.Uniform(0., 0. + psf_phi_cm);
 	    
  	    bool jpsi_decay = target_crs->jpsi_decay();	    
- 	    if(jpsi_decay):
-	    {
+ 	    if(jpsi_decay){
 		double m_jpsi = 3.0969;
 		
 		TLorentzVector L_jpsi;
-		L_jpsi.SetPxPyPzE(L_gprime.Px(),L_gprime.Py(),L_gprime.Pz(),sqrt(m_jpsi*m_jpsi+L_gprime()*L_gprime()));
+		L_jpsi.SetPxPyPzE(L_gprime.Px(),L_gprime.Py(),L_gprime.Pz(),sqrt(m_jpsi*m_jpsi+L_gprime.P()*L_gprime.P()));
 
 
 		TGenPhaseSpace event;
 		double masses[2]={Me,Me};
 		event.SetDecay(L_jpsi,2,masses);
 
-		event.generate();
+		event.Generate();
 
 		L_em=*(event.GetDecay(0));
 		L_ep=*(event.GetDecay(1));
-	    }
-	    else:
-	    {
+	    }else{
             	double El = sqrt(Q2) / 2.; // Energy of lepton in the rest frame of qprime
             	double Pl = sqrt(El * El - Me * Me);
 
