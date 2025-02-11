@@ -223,6 +223,7 @@ int main(int argc, char **argv)
     const double Me = 0.00051;
 
     double m_tar=target_crs->get_mass();
+    int PID=target_crs->get_PID();
 
     const double Minv_min = sqrt(m_tar*m_tar + 2*m_tar*Eg_min ) - m_tar;
 
@@ -374,7 +375,7 @@ int main(int argc, char **argv)
             double Pprime = 0.5 * sqrt(Lambda(s, Q2, m_tar * m_tar) / s); // Momentum in c.m. it is the same for q_pr and p_pr
 
             Lcm.SetPxPyPzE(0., 0., Eg, m_tar + Eg);
-            L_prot.SetPxPyPzE(Pprime * sin(th_pprime), 0., Pprime * cos(th_pprime), sqrt(Pprime * Pprime + m_tar * m_tar));
+            L_tar.SetPxPyPzE(Pprime * sin(th_pprime), 0., Pprime * cos(th_pprime), sqrt(Pprime * Pprime + m_tar * m_tar));
             L_gprime.SetPxPyPzE(Pprime * sin(th_qprime), 0., Pprime * cos(th_qprime), sqrt(Pprime * Pprime + Q2));
 
             double psf_cos_th = 2.; // cos(th):(-1 : 1)
@@ -383,12 +384,33 @@ int main(int argc, char **argv)
             double cos_th = rand.Uniform(-1., -1 + psf_cos_th);
             double sin_th = sqrt(1 - cos_th * cos_th);
             double phi_cm = rand.Uniform(0., 0. + psf_phi_cm);
+	    
+ 	    bool jpsi_decay = target_crs->jpsi_decay();	    
+ 	    if(jpsi_decay):
+	    {
+		double m_jpsi = 3.0969;
+		
+		TLorentzVector L_jpsi;
+		L_jpsi.SetPxPyPzE(L_gprime.Px(),L_gprime.Py(),L_gprime.Pz(),sqrt(m_jpsi*m_jpsi+L_gprime()*L_gprime()));
 
-            double El = sqrt(Q2) / 2.; // Energy of lepton in the rest frame of qprime
-            double Pl = sqrt(El * El - Me * Me);
 
-            L_em.SetPxPyPzE(Pl * sin_th * cos(phi_cm), Pl * sin_th * sin(phi_cm), Pl * cos_th, El);
-            L_ep.SetPxPyPzE(-Pl * sin_th * cos(phi_cm), -Pl * sin_th * sin(phi_cm), -Pl * cos_th, El);
+		TGenPhaseSpace event;
+		double masses[2]={Me,Me};
+		event.SetDecay(L_jpsi,2,masses);
+
+		event.generate();
+
+		L_em=*(event.GetDecay(0));
+		L_ep=*(event.GetDecay(1));
+	    }
+	    else:
+	    {
+            	double El = sqrt(Q2) / 2.; // Energy of lepton in the rest frame of qprime
+            	double Pl = sqrt(El * El - Me * Me);
+
+            	L_em.SetPxPyPzE(Pl * sin_th * cos(phi_cm), Pl * sin_th * sin(phi_cm), Pl * cos_th, El);
+            	L_ep.SetPxPyPzE(-Pl * sin_th * cos(phi_cm), -Pl * sin_th * sin(phi_cm), -Pl * cos_th, El);
+	    }
 
             /////////////////Radiative correction///////////////////
             //double
@@ -426,12 +448,12 @@ int main(int argc, char **argv)
             L_rad_2.Boost(Lcm.BoostVector()); // Move to the Lab Frame
 
             L_gprime.Boost(Lcm.BoostVector());
-            L_prot.Boost(Lcm.BoostVector());
+            L_tar.Boost(Lcm.BoostVector());
 
             double psf_phi_lab = 2 * PI;
             double phi_rot = rand.Uniform(0., psf_phi_lab);
 
-            L_prot.RotateZ(phi_rot);
+            L_tar.RotateZ(phi_rot);
             L_gprime.RotateZ(phi_rot);
             L_em.RotateZ(phi_rot);
             L_ep.RotateZ(phi_rot);
@@ -442,7 +464,7 @@ int main(int argc, char **argv)
             Phi_rad = L_rad_1.Phi();
             Angle_g_lep = L_rad_1.Angle(L_em.Vect());
 
-            tcs_kin1.SetLemLepLp(L_em, L_ep, L_prot);
+            tcs_kin1.SetLemLepLp(L_em, L_ep, L_tar);
 
             psf = psf_t * psf_Q2 * psf_phi_lab * psf_cos_th * psf_phi_cm * psf_Eg;
 
@@ -452,10 +474,10 @@ int main(int argc, char **argv)
 
             double vz = rand.Uniform(vz_min, vz_max);
 
-            px_prot = L_prot.Px();
-            py_prot = L_prot.Py();
-            pz_prot = L_prot.Pz();
-            E_prot = L_prot.E();
+            px_tar = L_tar.Px();
+            py_tar = L_tar.Py();
+            pz_tar = L_tar.Pz();
+            E_tar = L_tar.E();
             px_ep = L_ep.Px();
             py_ep = L_ep.Py();
             pz_ep = L_ep.Pz();
@@ -493,9 +515,9 @@ int main(int argc, char **argv)
                 // Writing Positron
                 Lund_out << 2 << setw(5) << 1 << setw(5) << 1 << setw(7) << -11 << setw(5) << 0 << setw(5) << 0 << setw(15) << px_ep << setw(15) << py_ep << setw(15) << pz_ep;
                 Lund_out << setw(15) << E_ep << setw(15) << Me << setw(15) << 0. << setw(15) << 0. << setw(15) << vz << "\n";
-                // Writing Proton
-                Lund_out << 3 << setw(5) << 1 << setw(5) << 1 << setw(7) << 2212 << setw(5) << 0 << setw(5) << 0 << setw(15) << px_prot << setw(15) << py_prot << setw(15) << pz_prot;
-                Lund_out << setw(15) << L_prot.E() << setw(15) << m_tar << setw(15) << 0. << setw(15) << 0. << setw(15) << vz << "\n";
+                // Writing Target
+                Lund_out << 3 << setw(5) << 1 << setw(5) << 1 << setw(7) << PID << setw(5) << 0 << setw(5) << 0 << setw(15) << px_tar << setw(15) << py_tar << setw(15) << pz_tar;
+                Lund_out << setw(15) << L_tar.E() << setw(15) << m_tar << setw(15) << 0. << setw(15) << 0. << setw(15) << vz << "\n";
                 // Writing Photons
                 Lund_out << 4 << setw(5) << 0 << setw(5) << 1 << setw(7) << 22 << setw(5) << 0 << setw(5) << 0 << setw(15) << px_rad_em << setw(15) << py_rad_em << setw(15) << pz_rad_em;
                 Lund_out << setw(15) << E_rad_em << setw(15) << 0.0 << setw(15) << 0. << setw(15) << 0. << setw(15) << vz << "\n";

@@ -27,6 +27,7 @@ public:
 	virtual int get_PID() const {return PID;};
         virtual double get_mass() const {return mass;};
         virtual double get_mag_mom() const {return mag_mom;};
+	virtual bool jpsi_decay() const {return true;};
 };
 	
 

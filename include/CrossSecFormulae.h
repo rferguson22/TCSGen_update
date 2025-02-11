@@ -24,6 +24,7 @@ public:
 	double get_mass() const override{return target->get_mass();};
 	int get_PID() const override{return target->get_PID();};
 	double get_mag_mom() const override{return target->get_mag_mom();};
+	bool jpsi_decay() const override{return false;};
 };
 
 class INT : public cross_section {
@@ -45,6 +46,7 @@ public:
 	double get_mass() const override{return target->get_mass();};
         int get_PID() const override{return target->get_PID();};
         double get_mag_mom() const override{return target->get_mag_mom();};
+	bool jpsi_decay() const override{return false;};
 
 };
 
