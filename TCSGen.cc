@@ -73,6 +73,7 @@ int main(int argc, char **argv)
     int n_perfile;
     double Eb;
     double t_lim;
+    double tSlope;
     double Eg_min;
     double Eg_max;
     double MinvMin;
@@ -110,6 +111,10 @@ int main(int argc, char **argv)
         {
             t_lim = atof(val.c_str());
         }
+	else if (key.compare("tSlope") == 0)
+	{
+	    tSlope = atof(val.c_str());
+	}
         else if (key.compare("EgMin") == 0)
         {
             Eg_min = atof(val.c_str());
@@ -199,6 +204,7 @@ int main(int argc, char **argv)
     cout << "Nsim = " << Nsim << endl;
     cout << "Eb = " << Eb << endl;
     cout << "t_lim = " << t_lim << endl;
+    cout << "tSlope = " << tSlope << endl;
     cout << "Eg_min = " << Eg_min << endl;
     cout << "Eg_max = " << Eg_max << endl;
     cout << "MinvMin = " << MinvMin << endl;

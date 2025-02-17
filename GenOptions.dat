@@ -1,6 +1,7 @@
 Nsim     10000
 Eb       10.6
 tLim     -1.8
+tSlope   1.13
 EgMin    4
 EgMax    10.6
 vzMax    2.5
@@ -11,4 +12,4 @@ LUND     0
 Seed     0
 Target   p_tar
 Model    model_proton
-CrsSec   BH
+CrsSec   JPsi_diff
