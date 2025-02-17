@@ -12,7 +12,7 @@ private:
 public:
 	BH(std::shared_ptr<cross_section> target_model):target(target_model){}
 
-	double c_sec(double a_s, double a_Q2, double a_t, double a_weight, double a_phi, double a_th,double a_sc_D){
+	double c_sec(double a_s, double a_Q2, double a_t, double a_weight, double a_phi, double a_th,double a_sc_D,double e_g,double fit_scale,double tSlope){
 		double f1p = target->f1(a_t);
 		double f2p = target->f2(a_t);
 		double m = target->get_mass();	
@@ -33,7 +33,7 @@ private:
 public:
         INT(std::shared_ptr<cross_section>target_model):target(target_model){}
 	
-        double c_sec(double a_s, double a_Q2, double a_t, double a_weight, double a_phi, double a_th,double a_sc_D){
+        double c_sec(double a_s, double a_Q2, double a_t, double a_weight, double a_phi, double a_th,double a_sc_D,double e_g,double fit_scale,double tSLope){
                 double f1p = target->f1(a_t);
                 double f2p = target->f2(a_t);
                 double m = target->get_mass();
@@ -57,7 +57,7 @@ private:
 public:
 	JPsi_diff(std::shared_ptr<cross_section>target_model):target(target_model){}
 
-	double c_sec(double a_s, double a_Q2, double a_t, double a_weight, double a_phi, double a_th, double a_sc_D){
+	double c_sec(double a_s, double a_Q2, double a_t, double a_weight, double a_phi, double a_th, double a_sc_D,double e_g,double fit_scale,double tSlope){
 		double f1p = target->f1(a_t);
 		double f2p = target->f2(a_t);
 		double m = target->get_mass();

@@ -227,6 +227,7 @@ int main(int argc, char **argv)
     const double radian = 57.2957795130823229;
     const double Mp = 0.9383;
     const double Me = 0.00051;
+    const double SLAC_fit_scale = 7.79117e-23;
 
     double m_tar=target_crs->get_mass();
     int PID=target_crs->get_PID();
@@ -472,7 +473,7 @@ int main(int argc, char **argv)
             psf = psf_t * psf_Q2 * psf_phi_lab * psf_cos_th * psf_phi_cm * psf_Eg;
 
             // crs_lmlp.Set_SQ2t(s, Q2, t);
-            crs = target_crs->c_sec(s, Q2, t, -1, (phi_cm * TMath::RadToDeg()), (acos(cos_th) * TMath::RadToDeg()),2.); // -1: cros section is not weighted by L/L0
+            crs = target_crs->c_sec(s, Q2, t, -1, (phi_cm * TMath::RadToDeg()), (acos(cos_th) * TMath::RadToDeg()),2.,L_gprime.E(),SLAC_fit_scale,tSlope); // -1: cros section is not weighted by L/L0
 	    eta = Q2 / (2 * (s - m_tar * m_tar) - Q2);
 
             double vz = rand.Uniform(vz_min, vz_max);
