@@ -22,6 +22,7 @@ TTCSCrs::TTCSCrs() {
     
     f_BH = new TF2("f_BH", BH_crs_section, 0, 360, 0, 180, 7);
     f_INT = new TF2("f_INT", INT_crs_section, 0., 360., 0., 180., 12);
+    f_JPsiDiff = new TF1("f_JPsiDiff",JPsiDiff_crs_section,8.25,25,4);
     gp = new GPDs(dat, 17, 17, 9, 1.49, -0.20, 0.072);
 }
 
@@ -218,6 +219,39 @@ double TTCSCrs::Eval_INT(double a_s, double a_Q2, double a_t, double a_weight, d
     f_INT->SetParameter(11, Dterm);
     return f_INT->Eval(a_phi, a_th);
 }
+
+
+double TTCSCrs::Eval_JPsiDiff(double e_g,double fit_factor,double tSlope,double m_tar,double a_t) const{
+    f_JPsiDiff->SetParameters(e_g,fit_factor,tSlope,m_tar);
+
+    return f_JPsiDiff->Eval(a_t);
+}
+
+double TTCSCrs::JPsiDiff_crs_section(double *xx,double *par) {
+    const double m_JPsi = 3.097;
+    const double Pi = 3.14159;
+    const double Fermi = 1e-13;
+
+    const double R = 1*Fermi;
+    double N_2g =1;
+
+    double tM=xx[0];
+    double e_g=par[0];
+    N_2g=par[1];
+    double tSlope=par[2];
+    double m_tar=par[3];
+
+    double F_2g = TMath::Exp(tSlope*tM);
+    double s = m_tar*m_tar +2*m_tar*e_g;
+    double x = (2*m_tar*m_JPsi + m_JPsi*m_JPsi)/(s-m_tar*m_tar);
+    
+    double nue = 1/(16*Pi*(s-m_tar*m_tar)*(s-m_tar*m_tar));
+
+    double dSigma_dt = N_2g*nue*TMath::Power(1-x,2)/(R*R*m_JPsi*m_JPsi)*F_2g*TMath::Power(s-m_tar*m_tar,2);
+
+    return dSigma_dt;
+}
+
 
 void TTCSCrs::Set_SQ2t(double a_s, double a_Q2, double a_t) {
     is = a_s;

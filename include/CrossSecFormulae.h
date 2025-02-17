@@ -62,7 +62,7 @@ public:
 		double f2p = target->f2(a_t);
 		double m = target->get_mass();
 
-		return ttcscrs.Eval_INT(a_s,a_Q2,a_t,a_weight,a_phi,a_th,a_sc_D,f1p,f2p,m);
+		return ttcscrs.Eval_JPsiDiff(e_g,fit_scale,tSlope,m,a_t);
 	}
 
 	std::string get_type() const override{return "JPsi_diff";};

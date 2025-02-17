@@ -22,6 +22,7 @@ public:
     double Eval_BH(double, double, double, double, double, double, double,double,double) const; // s, Q2, t, weight, phi, theta
     double Eval_INT(double, double, double) const; // (phi, theta, scale of Dterm) phi and theta in radians
     double Eval_INT(double, double, double, double, double, double, double,double,double,double) const; // s, Q2, t, weight, phi, theta, sc_D
+    double Eval_JPsiDiff(double,double,double,double,double) const;
 
     void Set_SQ2t(double, double, double);
     double Integral_BH_phi_th(double phi_min = 0, double phi_max = 360, double th_min = 0, double th_max = 180);
@@ -49,8 +50,10 @@ private:
 
     static double BH_crs_section(double *, double *); // Hmmm why it worked with static ?, and didn't work without static?
     static double INT_crs_section(double *, double *); // Hmmm why it worked with static ?, and didn't work without static?
+    static double JPsiDiff_crs_section(double *, double *);
     TF2 *f_BH;
     TF2 *f_INT;
+    TF1 *f_JPsiDiff;
 
 };
 
